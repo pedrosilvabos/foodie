@@ -17,7 +17,8 @@ Route::get('/', function () {
    
 });
 Route::get('recipe/create', 'RecipeController@create')->name('recipe.create');
-
+Route::get('recipe/{recipe}', 'RecipeController@show')->name('recipe.show');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('recipe/ingredient/{ingredient}', 'RecipeController@destroy')->name('recipe.ingredient.delete');

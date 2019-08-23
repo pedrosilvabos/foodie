@@ -33,8 +33,7 @@ class RecipeController extends Controller
         $recipe->recipes_type = "jantar";
         $recipe->recipes_cost = 40;
         $recipe->recipes_discription = "comida favorita da Alice";
-        $recipe->recipes_preparation = "descongelar";
- 
+
         $recipe->save();
 
         $ingredient = Ingredients::find([1, 2]);
@@ -45,25 +44,15 @@ class RecipeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Recipes $recipe)
     {
-        //
+       // dd($recipe);
+        return view('recipe.show', compact('recipe'));
     }
 
     /**
@@ -95,8 +84,10 @@ class RecipeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Ingredients $ingredient)
     {
-        //
+        $recipe = Recipes::find(3);
+
+        $ingredient->recipes()->detach($ingredient);
     }
 }

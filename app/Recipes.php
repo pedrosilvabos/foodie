@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\ingredients;
 
 class Recipes extends Model
 {
@@ -13,10 +13,9 @@ class Recipes extends Model
         'recipes_cost',
         'recipes_discription',
         'recipes_protein',
-        'recipes_preparation',
      
     ];
-   
+
     public function ingredients()
     {
         return $this->belongsToMany(Ingredients::class);

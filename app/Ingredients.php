@@ -17,6 +17,7 @@ class Ingredients extends Model
         'ingredient_servings',
         'ingredient_created_at'       
     ];
+
     public function recipes()
     {
         return $this->belongsToMany(Recipes::class);
