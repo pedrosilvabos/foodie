@@ -17,7 +17,9 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        //
+        $recipes = Recipes::all();
+    
+        return view('recipe.index', compact('recipes'));
     }
 
     /**
@@ -25,22 +27,12 @@ class RecipeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
-    {
-        $recipe = new Recipes;
-        $recipe->recipes_name = 'Peixe no forno';
-        $recipe->recipes_protein = 40;
-        $recipe->recipes_type = "jantar";
-        $recipe->recipes_cost = 40;
-        $recipe->recipes_discription = "comida favorita da Alice";
-
-        $recipe->save();
-
-        $ingredient = Ingredients::find([1, 2]);
-    
-        $recipe->ingredients()->attach($ingredient);
-
-        return 'Success';
+    public function create()
+    {      
+        $listOfIngredients = [];
+        $ingredients = Ingredients::all();
+        
+        return view('recipe.create', compact('ingredients','listOfIngredients'));
     }
 
     /**
@@ -51,8 +43,34 @@ class RecipeController extends Controller
      */
     public function show(Recipes $recipe)
     {
-       // dd($recipe);
+    
         return view('recipe.show', compact('recipe'));
+    }
+/**
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+
+       
+        $recipe = new Recipes;
+        $recipe->recipes_name = $request->get('recipe_name');
+        $recipe->recipes_protein = $request->get('recipe_protein');
+        $recipe->recipes_type = $request->get('recipe_type');
+        $recipe->recipes_cost = $request->get('recipe_cost');
+        $recipe->recipes_discription = $request->get('recipe_discription');
+        $recipe->updated_at = date("Y-m-d H:i:s");
+        $recipe->created_at = date("Y-m-d H:i:s");
+//recheck this updated and created at
+        $recipe->save();
+//the ingredients need to be selected in javasript
+        $ingredient = Ingredients::find([1, 2]);
+
+        $recipe->ingredients()->attach($ingredient);
+
+        return 'Success';
     }
 
     /**
@@ -90,4 +108,10 @@ class RecipeController extends Controller
 
         $ingredient->recipes()->detach($ingredient);
     }
+
+    public function ajax($id) {
+        $msg = "This is a simple message.";
+      
+        return response()->json(array('msg'=> $id), 200);
+     }
 }

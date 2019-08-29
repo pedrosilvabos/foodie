@@ -16,13 +16,13 @@ class Ingredients extends Migration
         Schema::create('ingredients', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('ingredient_name');
-            $table->integer('ingredient_servings');
-            $table->integer('ingredient_price');
-            $table->integer('ingredient_quantity');
-            $table->integer('ingredient_proteins');
             $table->string('ingredient_type');
+            $table->float('ingredient_servings',4,1);
+            $table->float('ingredient_price',4,2);
+            $table->float('ingredient_quantity_kg',4,2);
+            $table->float('ingredient_proteins',5,2);
             $table->timestamp('created_at')->nullable();
-         $table->timestamp('updated_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 

@@ -92,6 +92,36 @@
                     <a href="https://nova.laravel.com">Nova</a>
                     <a href="https://forge.laravel.com">Forge</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a>
+                    {!! Form::open(['route' => 'recipe.store']) !!}
+
+                    <div class="form-group">
+                        {!! Form::label('recipe_name', 'Recipe Name') !!}
+                        {!! Form::text('recipe_name', null, ['class' => 'form-control']) !!}
+                    </div>
+                    
+                    <div class="form-group">
+                        {!! Form::label('recipe_type', 'Recipe Type') !!}
+                        {!! Form::text('recipe_type', null, ['class' => 'form-control']) !!}
+                    </div>
+                
+                    <div class="form-group">
+                        {!! Form::label('recipe_cost', 'Recipe Cost') !!}
+                        {!! Form::text('recipe_cost', null, ['class' => 'form-control']) !!}
+                    </div>
+                    
+                    <div class="form-group">
+                        {!! Form::textarea('recipes_discription', null, ['class' => 'form-control']) !!}
+                    </div>
+                
+                    <div class="form-group">
+                        {!! Form::label('recipe_protein', 'Recipe Protein') !!}
+                        {!! Form::text('recipe_protein', null, ['class' => 'form-control']) !!}
+                    </div>
+                    
+                    {!! Form::submit('Submit', ['class' => 'btn btn-info']) !!}
+                    
+                    {!! Form::close() !!}
+
                 </div>
             </div>
         </div>
