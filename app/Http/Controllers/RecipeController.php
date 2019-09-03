@@ -29,10 +29,9 @@ class RecipeController extends Controller
      */
     public function create()
     {      
-        $listOfIngredients = [];
-        $ingredients = Ingredients::all();
+
         
-        return view('recipe.create', compact('ingredients','listOfIngredients'));
+        return view('recipe.create' );
     }
 
     /**

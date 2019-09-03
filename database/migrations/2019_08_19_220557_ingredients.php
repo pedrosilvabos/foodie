@@ -21,6 +21,9 @@ class Ingredients extends Migration
             $table->float('ingredient_price',4,2);
             $table->float('ingredient_quantity_kg',4,2);
             $table->float('ingredient_proteins',5,2);
+            $table->float('ingredient_calories',5,2);
+            $table->float('ingredient_lifetime',5,2);
+            $table->string('ingredient_icon');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });

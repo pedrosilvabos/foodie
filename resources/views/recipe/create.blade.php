@@ -1,10 +1,11 @@
-@foreach($ingredients as $ingredient)
-<li>{{ $ingredient->ingredient_name }}</li>
-@endforeach
+
+
 
 @extends('layouts.app')
 @section('content')
+<IngredientList> </IngredientList>
     <div class="flex-center position-ref full-height">
+        
         {!! Form::open(['route' => 'recipe.store']) !!}
         <div class="form-group">
             {!! Form::label('recipe_name', 'Recipe Name') !!}

@@ -14,9 +14,12 @@ $faker->addProvider(new \FakerRestaurant\Provider\en_US\Restaurant($faker));
         'ingredient_name' => $faker->vegetableName(),
         'ingredient_type' => $faker->text(20),
         'ingredient_quantity_kg' => $faker->randomFloat($nbMaxDecimals = 1, $min = 0, $max = 10),
+        'ingredient_icon' => $faker->image($dir = public_path('images/icons'), $width = 100, $height = 100, 'cats', false),
         'ingredient_proteins' => $faker->randomFloat($nbMaxDecimals = 0, $min = 0, $max = 900),
+        'ingredient_calories' => $faker->randomFloat($nbMaxDecimals = 0, $min = 0, $max = 900),
+        'ingredient_lifetime' => $faker->randomFloat($nbMaxDecimals = 0, $min = 0, $max = 30),
         'ingredient_price' => $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 10),
-        'ingredient_servings' => $faker->randomFloat($nbMaxDecimals = 1, $min = 0, $max = 10),
+        'ingredient_servings' => $faker->randomFloat($nbMaxDecimals = 0, $min = 1, $max = 10),
   
     ];
 });

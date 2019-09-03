@@ -10,10 +10,13 @@ class Ingredients extends Model
     protected $fillable = [
         'ingredient_name',
         'ingredient_type',
+        'ingredient_servings',
+        'ingredient_price',
         'ingredient_quantity_kg',
         'ingredient_proteins',
-        'ingredient_price',
-        'ingredient_servings',
+        'ingredient_calories',
+        'ingredient_lifetime',
+        'ingredient_icon',
         'ingredient_created_at'       
     ];
 
