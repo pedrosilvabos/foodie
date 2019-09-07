@@ -15,15 +15,15 @@ class Ingredients extends Migration
     {
         Schema::create('ingredients', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('ingredient_name');
-            $table->string('ingredient_type');
-            $table->float('ingredient_servings',4,1);
-            $table->float('ingredient_price',4,2);
-            $table->float('ingredient_quantity_kg',4,2);
-            $table->float('ingredient_proteins',5,2);
-            $table->float('ingredient_calories',5,2);
-            $table->float('ingredient_lifetime',5,2);
-            $table->string('ingredient_icon');
+            $table->string('name');
+            $table->string('type');
+            $table->float('servings',4,1);
+            $table->float('price',4,2);
+            $table->float('quantity_kg',4,2);
+            $table->float('proteins',5,2);
+            $table->float('calories',5,2);
+            $table->float('lifetime',5,2);
+            $table->string('icon');
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });

@@ -15,20 +15,8 @@ class IngredientController extends Controller
     public function index()
     {
         $ingredients = Ingredients::all();
-  
         return $ingredients;
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -37,7 +25,20 @@ class IngredientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $ingredient = new Ingredients;
+
+        $ingredient->name = $request->name;
+        $ingredient->type = $request->type;
+        $ingredient->price = $request->price;
+        $ingredient->servings = $request->servings;
+        $ingredient->quantity_kg = $request->quantity_kg;
+        $ingredient->proteins = $request->proteins;
+        $ingredient->calories = $request->calories;
+        $ingredient->lifetime = $request->lifetime;
+        $ingredient->icon = $request->icon;
+
+
+        $ingredient->save();
     }
 
     /**
@@ -48,7 +49,13 @@ class IngredientController extends Controller
      */
     public function show($id)
     {
-        //
+        $ingredient = Ingredients::find($id);
+        if($ingredient == null)
+        {
+            return "ingredient does not exist";
+        }
+
+        return $ingredient;
     }
 
     /**
@@ -71,7 +78,26 @@ class IngredientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      
+         $ingredient = Ingredients::find($id);
+         if($ingredient == null)
+         {
+             return "ingredient does not exist";
+         }
+         $ingredient->name = $request->name;
+        $ingredient->type = $request->name;
+        $ingredient->price = $request->name;
+        $ingredient->quantity_kg = $request->name;
+        $ingredient->proteins = $request->name;
+        $ingredient->calories = $request->name;
+        $ingredient->lifetime = $request->name;
+        $ingredient->icon = $request->name;
+
+         $ingredient->save();
+
+         $updated = Ingredients::find($id);
+         return $updated;
+
     }
 
     /**
@@ -82,6 +108,13 @@ class IngredientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $ingredient = Ingredients::find($id);
+        if($ingredient == null)
+        {
+            return "ingredient does not exist";
+        }
+        $ingredient->delete();
+
+        return $ingredientc['name'] . " was deleted";
     }
 }
