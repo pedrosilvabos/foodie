@@ -13,7 +13,7 @@ class Pantry extends Migration
      */
     public function up()
     {
-        Schema::create('pantry', function (Blueprint $table) {
+        Schema::create('pantries', function (Blueprint $table) {
         $table->bigIncrements('id');
         $table->integer('user_id')->unsigned();
         $table->timestamp('created_at')->nullable();

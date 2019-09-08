@@ -13,7 +13,7 @@ class PantryIngredients extends Migration
      */
     public function up()
     {
-        Schema::create('pantry_ingredients', function (Blueprint $table) {
+        Schema::create('ingredients_pantry', function (Blueprint $table) {
             $table->integer('ingredients_id')->unsigned();
             $table->integer('pantry_id')->unsigned();
             $table->timestamps();
