@@ -1866,8 +1866,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1888,23 +1886,29 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       return this.ingredients.filter(function (ingredient) {
-        return ingredient.ingredient_name.toLowerCase().match(_this2.search.toLowerCase());
+        return ingredient.name.toLowerCase().match(_this2.search.toLowerCase());
       });
     }
   },
   methods: {
-    addIngredientToPantry: function addIngredientToPantry(ingredient) {
+    AddIngredientToPantry: function AddIngredientToPantry(ingredient) {
       this.pantry.push(ingredient);
-      this.clearCart();
+      this.ClearCart();
     },
-    removeIngredientFromPantry: function removeIngredientFromPantry(index) {
+    RemoveIngredientFromPantry: function RemoveIngredientFromPantry(index) {
       this.pantry.splice(index, 1);
     },
-    clearCart: function clearCart() {
+    ClearCart: function ClearCart() {
       this.ingredient = {};
     },
-    getImagePath: function getImagePath(index) {
+    GetImagePath: function GetImagePath(index) {
       return this.ingredients[index].ingredient_icon;
+    },
+    SaveToPantry: function SaveToPantry() {
+      axios.put('../api/pantry/1', {
+        //hard coded pantry id
+        ingredient: this.pantry
+      });
     }
   }
 });
@@ -37243,11 +37247,11 @@ var render = function() {
               _vm._l(_vm.filteredIngredients, function(pIngredient, index) {
                 return _c("div", [
                   _vm._v(
-                    " \n                    " +
-                      _vm._s(pIngredient.ingredient_name) +
-                      " \n                   "
+                    " \r\n                    " +
+                      _vm._s(pIngredient.name) +
+                      " \r\n                   "
                   ),
-                  _c("img", { attrs: { src: _vm.getImagePath(index) } }),
+                  _c("img", { attrs: { src: _vm.GetImagePath(index) } }),
                   _vm._v(" "),
                   _c("input", {
                     staticClass: "fa fa-plus",
@@ -37258,7 +37262,7 @@ var render = function() {
                     },
                     on: {
                       click: function($event) {
-                        return _vm.addIngredientToPantry(pIngredient)
+                        return _vm.AddIngredientToPantry(pIngredient)
                       }
                     }
                   })
@@ -37273,9 +37277,9 @@ var render = function() {
               _vm._l(_vm.pantry, function(ingredient, index) {
                 return _c("div", [
                   _vm._v(
-                    " \n                        " +
-                      _vm._s(ingredient.ingredient_name) +
-                      " \n                        \n                       "
+                    " \r\n                        " +
+                      _vm._s(ingredient.name) +
+                      " \r\n                        \r\n                       "
                   ),
                   _c("input", {
                     staticClass: "fa fa-minus",
@@ -37286,14 +37290,24 @@ var render = function() {
                     },
                     on: {
                       click: function($event) {
-                        return _vm.removeIngredientFromPantry(index)
+                        return _vm.RemoveIngredientFromPantry(index)
                       }
                     }
                   })
                 ])
               }),
               0
-            )
+            ),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "fa fa-minus",
+              attrs: { type: "button", "aria-hidden": "true", value: "save" },
+              on: {
+                click: function($event) {
+                  return _vm.SaveToPantry()
+                }
+              }
+            })
           ],
           2
         )

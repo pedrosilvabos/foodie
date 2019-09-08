@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Recipes;
+use App\Pantry;
 
 class Ingredients extends Model
 {
@@ -23,5 +24,10 @@ class Ingredients extends Model
     public function recipes()
     {
         return $this->belongsToMany(Recipes::class);
+    }
+
+    public function pantry()
+    {
+        return $this->belongsToMany(Pantry::class);
     }
 }

@@ -4,24 +4,22 @@
     <div class="content">
         <div class="container">
             <div class="row">
-             
                     <div v-for="ingredient in ingredients"></div>
-                
                 <div class="col">
                     <div v-for="(pIngredient, index) in filteredIngredients"> 
-                    {{ pIngredient.ingredient_name }} 
-                   <img :src=getImagePath(index)>
-                     
-                   <input type="button" class="fa fa-plus" aria-hidden="true" v-on:click="addIngredientToPantry(pIngredient)" value="add">
+                    {{ pIngredient.name }} 
+                   <img :src=GetImagePath(index)>
+                   <input type="button" class="fa fa-plus" aria-hidden="true" v-on:click="AddIngredientToPantry(pIngredient)" value="add">
                     </div>
                 </div>
                 <div class="col">
                     <div v-for="(ingredient, index) in pantry"> 
-                        {{ ingredient.ingredient_name }} 
+                        {{ ingredient.name }} 
                         
-                       <input type="button" class="fa fa-minus" aria-hidden="true" v-on:click="removeIngredientFromPantry(index)" value="remove">
+                       <input type="button" class="fa fa-minus" aria-hidden="true" v-on:click="RemoveIngredientFromPantry(index)" value="remove">
                     </div>
                 </div>
+                <input type="button" class="fa fa-minus" aria-hidden="true" v-on:click="SaveToPantry()" value="save">
             </div>
         </div>
     </div>
@@ -47,24 +45,32 @@
             filteredIngredients: function(){
                
                 return this.ingredients.filter((ingredient) => {
-                    return ingredient.ingredient_name.toLowerCase().match(this.search.toLowerCase());
+                    return ingredient.name.toLowerCase().match(this.search.toLowerCase());
                 });
             }
         },
         methods: {
-            addIngredientToPantry: function(ingredient){
+            AddIngredientToPantry: function(ingredient){
                 this.pantry.push(ingredient)
-                this.clearCart();
+                this.ClearCart();
             },
-            removeIngredientFromPantry: function(index){
+            RemoveIngredientFromPantry: function(index){
                 this.pantry.splice(index,1);
             },
-            clearCart: function(){
+            ClearCart: function(){
                 this.ingredient = {}
             },
-            getImagePath(index){
+            GetImagePath(index){
            
                 return this.ingredients[index].ingredient_icon;
+            },
+            SaveToPantry(){
+                
+                    axios.put('../api/pantry/1', { //hard coded pantry id
+                    ingredient: this.pantry,
+
+                })
+
             }
         },
         

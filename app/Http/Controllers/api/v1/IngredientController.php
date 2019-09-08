@@ -64,7 +64,7 @@ class IngredientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function v($id)
     {
         //
     }
@@ -84,7 +84,7 @@ class IngredientController extends Controller
          {
              return "ingredient does not exist";
          }
-         $ingredient->name = $request->name;
+        $ingredient->name = $request->name;
         $ingredient->type = $request->name;
         $ingredient->price = $request->name;
         $ingredient->quantity_kg = $request->name;

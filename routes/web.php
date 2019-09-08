@@ -23,3 +23,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('recipe/ingredient/{ingredient}', 'RecipeController@destroy')->name('recipe.ingredient.delete');
 
 Route::post('/recipe/getmsg/{id}','RecipeController@ajax');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
