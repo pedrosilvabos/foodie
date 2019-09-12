@@ -13,8 +13,8 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <a href="{{route('ingredients.index')+Auth::user()->api_token}}">login here</a>
-                   
+
+                    You are logged in!
                 </div>
             </div>
         </div>

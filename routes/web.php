@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Auth::routes();
 Route::get('/', function () {
     return view('welcome');
 
@@ -18,11 +18,17 @@ Route::get('/', function () {
 });
 Route::resource('recipe', 'RecipeController');
 Route::resource('ingredients', 'IngredientController');
-Auth::routes();
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('recipe/ingredient/{ingredient}', 'RecipeController@destroy')->name('recipe.ingredient.delete');
 
 Route::post('/recipe/getmsg/{id}','RecipeController@ajax');
-Auth::routes();
+
+
+
+
+
+
+
 
 
