@@ -30,3 +30,4 @@ Vue.component('ingredientlist', require('./components/ingredients/IngredientList
 const app = new Vue({
     el: '#app',
 });
+

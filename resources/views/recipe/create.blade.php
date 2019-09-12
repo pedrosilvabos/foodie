@@ -3,7 +3,7 @@
 
 @extends('layouts.app')
 @section('content')
-<IngredientList> </IngredientList>
+
     <div class="flex-center position-ref full-height">
         
         {!! Form::open(['route' => 'recipe.store']) !!}

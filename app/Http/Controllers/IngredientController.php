@@ -4,9 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Ingredients;
+use Auth;
 
 class IngredientController extends Controller
 {
+     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,6 +24,7 @@ class IngredientController extends Controller
      */
     public function index()
     {
+    
         $ingredients = Ingredients::all();
   
         return view('ingredient.index', compact('ingredients'));

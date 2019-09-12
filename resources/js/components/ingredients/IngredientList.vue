@@ -37,9 +37,9 @@
 
         },
         created() {
-            axios.get('../api/ingredients')
+            axios.get('../api/ingredients') // add user token
             .then(response => this.ingredients = response.data)
-            
+
         },
         computed: {
             filteredIngredients: function(){

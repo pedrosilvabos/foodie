@@ -1877,7 +1877,8 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    axios.get('../api/ingredients').then(function (response) {
+    axios.get('../api/ingredients') // add user token
+    .then(function (response) {
       return _this.ingredients = response.data;
     });
   },

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\api\v1;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Ingredients;
+
+
 class IngredientController extends Controller
 {
     /**
@@ -58,16 +60,6 @@ class IngredientController extends Controller
         return $ingredient;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function v($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

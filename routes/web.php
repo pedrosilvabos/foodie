@@ -25,4 +25,4 @@ Route::get('recipe/ingredient/{ingredient}', 'RecipeController@destroy')->name('
 Route::post('/recipe/getmsg/{id}','RecipeController@ajax');
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+
