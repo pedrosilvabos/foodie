@@ -16,7 +16,11 @@ use Illuminate\Support\Facades\Auth;
 
 $api_token = Auth::user();
 
-Route::post('register','api\v1\AuthController@register');
-Route::post('login','api\v1\AuthController@login');
+    Route::post('login', 'api\v1\AuthController@login');
+    Route::post('register', 'api\v1\AuthController@register');
+    Route::group(['middleware' => 'auth:api'], function(){
+     Route::post('getUser', 'api\v1\AuthController@getUser');
+    });
+
 Route::middleware('auth:api')->resource('ingredients', 'api\v1\IngredientController');
 Route::middleware('auth:api')->resource('pantry', 'api\v1\PantryController');
