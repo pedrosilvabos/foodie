@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-<IngredientList> </IngredientList>
+<showallrecipes> </showallrecipes>
 @endsection
