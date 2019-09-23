@@ -2,12 +2,14 @@
 
 clone
 
-composer install
-npm install
-php artisan migrate
-php artisan passport:install 
-php artisan vendor:publish --tag=passport-components
-php artisan db:seed --class=RecipeTableSeeder -v 
+<li>
+  <ul>composer install </ul>
+ <ul>npm install</ul>
+ <ul>php artisan migrate</ul>
+ <ul>php artisan passport:install</ul> 
+ <ul>php artisan vendor:publish --tag=passport-components</ul>
+ <ul>php artisan db:seed --class=RecipeTableSeeder -v </ul>
 
-php artisan serve
-npm run watch
+ <ul>php artisan serve</ul>
+ <ul>npm run watch</ul>
+</li>
