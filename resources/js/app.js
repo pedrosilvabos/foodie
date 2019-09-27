@@ -3,7 +3,7 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
+import BootstrapVue from 'bootstrap-vue'
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -21,6 +21,8 @@ window.Vue = require('vue');
 
 Vue.component('ingredientlist', require('./components/ingredients/IngredientList.vue').default);
 Vue.component('showallrecipes', require('./components/recipes/showAllRecipes.vue').default);
+Vue.component('createrecipe', require('./components/recipes/createRecipe.vue').default);
+Vue.component('createingredient', require('./components/ingredients/createIngredient.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -29,5 +31,6 @@ Vue.component('showallrecipes', require('./components/recipes/showAllRecipes.vue
 
 const app = new Vue({
     el: '#app',
+    components: { 'b-alert': BootstrapVue }
 });
 
