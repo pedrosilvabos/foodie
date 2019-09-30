@@ -39,7 +39,6 @@ class IngredientController extends Controller
         $ingredient->lifetime = $request->lifetime;
         $ingredient->icon = $request->icon;
 
-
         $ingredient->save();
     }
 
@@ -52,8 +51,7 @@ class IngredientController extends Controller
     public function show($id)
     {
         $ingredient = Ingredients::find($id);
-        if($ingredient == null)
-        {
+        if ($ingredient == null) {
             return "ingredient does not exist";
         }
 
@@ -70,12 +68,11 @@ class IngredientController extends Controller
      */
     public function update(Request $request, $id)
     {
-      
-         $ingredient = Ingredients::find($id);
-         if($ingredient == null)
-         {
-             return "ingredient does not exist";
-         }
+
+        $ingredient = Ingredients::find($id);
+        if ($ingredient == null) {
+            return "ingredient does not exist";
+        }
         $ingredient->name = $request->name;
         $ingredient->type = $request->name;
         $ingredient->price = $request->name;
@@ -85,11 +82,10 @@ class IngredientController extends Controller
         $ingredient->lifetime = $request->name;
         $ingredient->icon = $request->name;
 
-         $ingredient->save();
+        $ingredient->save();
 
-         $updated = Ingredients::find($id);
-         return $updated;
-
+        $updated = Ingredients::find($id);
+        return $updated;
     }
 
     /**
@@ -101,8 +97,7 @@ class IngredientController extends Controller
     public function destroy($id)
     {
         $ingredient = Ingredients::find($id);
-        if($ingredient == null)
-        {
+        if ($ingredient == null) {
             return "ingredient does not exist";
         }
         $ingredient->delete();

@@ -1,9 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-        
+
 <ul>
-   
-        <createingredient> </createingredient>
+<createingredient> </createingredient>
 </ul>
 @endsection

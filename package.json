@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.10.2",
-        "bootstrap-vue": "^2.0.2"
+        "bootstrap-vue": "^2.0.2",
+        "vue-sweetalert-icons": "^4.2.0"
     }
 }
