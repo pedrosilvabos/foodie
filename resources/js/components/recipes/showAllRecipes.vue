@@ -8,7 +8,7 @@
                 <div class="col">
                     <div v-for="(precipe, index) in filteredRecipes" :key="(precipe, index)"> 
                         {{ precipe.recipes_name }} 
-                        <img :src=GetImagePath(index)>
+                       
                         <input type="button" class="fa fa-plus" aria-hidden="true" v-on:click="ShowRecipe(precipe)" value="add">
                     </div>
                 </div>
@@ -20,7 +20,7 @@
             </div>
         </div>
     </div>
-</div> 
+
 </template>
 
 <script>
@@ -50,10 +50,6 @@
             ShowRecipe: function(recipe){
                  axios.get('../api/recipes/' + recipe.id) // add user token
             .then(response => this.recipeDescription = response.data)
-
-                
-              
-             
             },
             RemoverecipeFromPantry: function(index){
                 this.pantry.splice(index,1);

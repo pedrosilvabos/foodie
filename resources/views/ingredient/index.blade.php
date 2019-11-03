@@ -3,8 +3,7 @@
 @section('content')
 All the Ingredients
 <ul>
-   
-        <IngredientList> </IngredientList>
+        <IngredientList :user="{{ $user }}"> </IngredientList>
 </ul>
 @endsection
 

@@ -6,17 +6,43 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Pantry;
 use App\Ingredients;
+use App\User;
 
 class PantryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of patries for a specif user
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+    
+       // $pantries = Pantry::all(); //gets all the pantries good for admin
+       $pantries = Pantry::where('user_id', $id);
+        if($pantries == null)
+        {
+            return "there are no pantries";
+        }
+        $numberOfPantries = count($pantries)-1;
+        //this gets one user for one pantry
+        for ($x = 0; $x <= $numberOfPantries; $x++) {
+            $pantryId = $pantries[$x]->id;
+            $user = User::whereHas('pantry', function ($query) use($pantryId) {
+            $query->where('pantry_id', 'like', $pantryId);
+            })->get();
+            //this gets all the users for each pantry
+            $numberOfUsers = count($user)-1;
+            $listOfUsers = [];
+            for($y = 0; $y <= $numberOfUsers; $y++){
+                
+                array_push($listOfUsers, $user[$y]->name);
+            }
+            $pantries[$x]->{"name"}= $listOfUsers;
+
+        }
+        
+        return $pantries->toJson(JSON_PRETTY_PRINT);;
     }
 
     /**
@@ -37,7 +63,15 @@ class PantryController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $ingredient = new Ingredients;
+
+        $ingredient->name = $request->name;
+        $ingredient->type = $request->type;
+        $ingredient->price = $request->price;
+
+        $ingredient->icon = $request->icon;
+
+        $ingredient->save();
        
     }
 
@@ -49,7 +83,18 @@ class PantryController extends Controller
      */
     public function show($id)
     {
-        //
+        $pantry = Pantry::find($id);
+        if($pantry == null)
+        {
+            return "recipe does not exist";
+        }
+        $ingredients = Ingredients::whereHas('pantry', function ($query) use($id) {
+            $query->where('id', 'like', $id);
+        })->get();
+        
+        $pantry->ingredients = $ingredients;
+
+        return $pantry->toJson(JSON_PRETTY_PRINT);;
     }
 
     /**
@@ -75,12 +120,10 @@ class PantryController extends Controller
         $justIds = [];
         for($i = 0; $i < count((array)$request['ingredient']); ++$i) {
             array_push($justIds,$request['ingredient'][$i]['id']);
-           
         }
         $pantry = new Pantry();
         //this keeps the ingredients passed into a specific pantry
         $pantry->Ingredients()->attach($justIds, ['pantry_id' => $id]);
-
         return "OK";
     }
 
@@ -94,4 +137,11 @@ class PantryController extends Controller
     {
         //
     }
+
+     /**
+     * return the pantry owner user id
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
 }

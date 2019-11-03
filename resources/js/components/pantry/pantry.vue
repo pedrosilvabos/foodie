@@ -1,26 +1,47 @@
 <template>
-  <div id="app">
-    <UsrMsg @inputData="updateMessage" />
+  <div id="#apps">
+    <input type="text" v-model="search" placeholder="Find" />
+    <div class="content">
+      {{userName}}'s Pantries
+      <div v-for="(pantryItem, index) in pantry" :key="(pantryItem, index)">{{pantryItem}}</div>
+    </div>
   </div>
 </template>
-
 <script>
-import UsrMsg from "./components/UsrMsg";
-
 export default {
-  name: "App",
-  components: {
-    UsrMsg
-  },
-  data: function() {
+  props: ["user"],
+  data() {
     return {
-      childData: ""
+      pantry: [],
+      search: "",
+      userName: "",
+      userId: ""
     };
   },
+  created() {
+    this.userName = this.user.name;
+    this.userId = this.user.id;
+    axios
+      .get("../api/pantry/" + this.userId) // add user token
+      .then(response => (this.pantry = response.data));
+  },
+  computed: {
+    filteredRecipes: function() {
+      return this.recipes.filter(recipe => {
+        return recipe.recipes_name
+          .toLowerCase()
+          .match(this.search.toLowerCase());
+      });
+    }
+  },
   methods: {
-    updateMessage(variable) {
-      this.childData= variable;
+    GetIngredients(id) {
+      axios
+        .get("../api/recipes") // add user token
+        .then(response => (this.recipes = response.data));
     }
   }
 };
 </script>
+<style>
+</style>

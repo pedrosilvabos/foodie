@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Users;
+use Illuminate\Support\Facades\Auth; 
+use App\Pantry;
 use Illuminate\Http\Request;
 use App\Ingredients;
-use Auth;
+use App\Pantries;
 
-class IngredientController extends Controller
+class PantryController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     /**
      * Display a listing of the resource.
      *
@@ -20,21 +18,28 @@ class IngredientController extends Controller
      */
     public function index()
     {
-
-        $ingredients = Ingredients::all();
         $user = Auth::user();
-
-        return view('ingredient.index', compact('ingredients', 'user'));
+        return view('pantry.index', compact('user'));    
+    
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Creates a new pantry for the specified user
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        return view('ingredient.create');
+        //create a new pantry
+        $pantries = new Pantries();
+        $pantries->save();
+        //get the new pantry id
+        $pantry = Pantry::find($pantries->id);
+        //attach the pantry id and the user id,accepts an array so itll be easy for a pantry to have multiple users
+        $pantry->user()->attach(
+            [$id]
+        );
+        return $pantry->toJson(JSON_PRETTY_PRINT);
     }
 
     /**
@@ -45,20 +50,7 @@ class IngredientController extends Controller
      */
     public function store(Request $request)
     {
-
-        $ingredient = new Ingredients;
-        $ingredient->ingredient_name = $request->get('ingredient_name');
-        $ingredient->ingredient_type = $request->get('ingredient_type');
-        $ingredient->ingredient_quantity = $request->get('ingredient_quantity');
-        $ingredient->ingredient_proteins = $request->get('ingredient_proteins');
-        $ingredient->ingredient_type = $request->get('ingredient_type');
-        $ingredient->ingredient_price = $request->get('ingredient_price');
-        $ingredient->ingredient_servings = $request->get('ingredient_servings');
-        $ingredient->created_at = date("Y-m-d H:i:s");
-        //recheck this updated and created at
-        $ingredient->save();
-
-        return 'Success';
+        //
     }
 
     /**
@@ -67,9 +59,20 @@ class IngredientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Ingredient $ingredient)
+    public function show($id)
     {
-        return view('ingredients.show', compact('ingredientss'));
+        $pantry = Pantry::find($id);
+        if($pantry == null)
+        {
+            return "recipe does not exist";
+        }
+        $ingredients = Ingredients::whereHas('pantry', function ($query) use($id) {
+            $query->where('id', 'like', $id);
+        })->get();
+        
+        $pantry->ingredients = $ingredients;
+
+        return $pantry->toJson(JSON_PRETTY_PRINT);
     }
 
     /**
@@ -105,4 +108,5 @@ class IngredientController extends Controller
     {
         //
     }
+    
 }

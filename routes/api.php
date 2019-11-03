@@ -21,7 +21,9 @@ $api_token = Auth::user();
     Route::group(['middleware' => 'auth:api'], function(){
      Route::post('getUser', 'api\v1\AuthController@getUser');
     });
-
+    Route::resource('pantry', 'api\v1\PantryController');
+    Route::post('pantry/pantryOwner/{pantryId}', 'api\v1\PantryController@pantryOwner')->name('getOwner');
 Route::resource('ingredients', 'api\v1\IngredientController');
 Route::resource('recipes', 'api\v1\RecipeController');
-Route::middleware('auth:api')->resource('pantry', 'api\v1\PantryController');
+
+

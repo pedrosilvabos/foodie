@@ -24,6 +24,8 @@ Route::get('recipe/ingredient/{ingredient}', 'RecipeController@destroy')->name('
 
 Route::post('/recipe/getmsg/{id}','RecipeController@ajax');
 
+Route::resource('pantry', 'PantryController');
+
 
 
 

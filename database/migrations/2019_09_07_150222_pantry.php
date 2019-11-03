@@ -15,7 +15,6 @@ class Pantry extends Migration
     {
         Schema::create('pantries', function (Blueprint $table) {
         $table->bigIncrements('id');
-        $table->integer('user_id')->unsigned();
         $table->timestamp('created_at')->nullable();
         $table->timestamp('updated_at')->nullable();
     });

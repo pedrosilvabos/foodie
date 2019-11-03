@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Pantry;
 
 class RegisterController extends Controller
 {
@@ -63,12 +64,23 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+  
+       $create = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'api_token' =>  Str::random(60),
-            
-        ]);
+            ]);
+   
+            //on registration create a new pantry for the user it only takes the user id to create a new pantry
+            $email = $data['email'];
+            $userId = User::where('email', $email)->pluck('id');
+            //new user, new pantry 
+            $pantry = new Pantry();
+            $user_id = $userId[0]; //this is a hack!!!
+            $pantry->save();
+            //create user pantry relations
+            $pantry->user()->attach([$user_id]);
+           
+            return $create;
     }
 }

@@ -1893,17 +1893,37 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["user"],
   data: function data() {
     return {
       ingredients: [],
       pantry: [],
-      search: ""
+      pantryId: [],
+      search: "",
+      pantryArray: [],
+      userName: "",
+      userId: ""
     };
   },
   created: function created() {
     var _this = this;
 
+    this.userName = this.user.name;
+    this.userId = this.user.id;
+    axios.get("../api/pantry/" + this.userId) // add user token
+    .then(function (response) {
+      return _this.pantry = response.data.id;
+    });
     axios.get("../api/ingredients") // add user token
     .then(function (response) {
       return _this.ingredients = response.data;
@@ -1920,11 +1940,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     AddIngredientToPantry: function AddIngredientToPantry(ingredient) {
-      this.pantry.push(ingredient);
+      this.pantryArray.push(ingredient);
       this.ClearCart();
     },
     RemoveIngredientFromPantry: function RemoveIngredientFromPantry(index) {
-      this.pantry.splice(index, 1);
+      this.pantryArray.splice(index, 1);
     },
     ClearCart: function ClearCart() {
       this.ingredient = {};
@@ -1933,9 +1953,8 @@ __webpack_require__.r(__webpack_exports__);
       return this.ingredients[index].ingredient_icon;
     },
     SaveToPantry: function SaveToPantry() {
-      axios.put("../api/pantry/1", {
-        //hard coded pantry id
-        ingredient: this.pantry
+      axios.put("../api/pantry/" + this.userId, {
+        ingredient: this.pantryArray
       });
     }
   }
@@ -2170,6 +2189,67 @@ __webpack_require__.r(__webpack_exports__);
     },
     showAlert: function showAlert() {
       this.dismissCountDown = this.dismissSecs;
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pantry/pantry.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pantry/pantry.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["user"],
+  data: function data() {
+    return {
+      pantry: [],
+      search: "",
+      userName: "",
+      userId: ""
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    this.userName = this.user.name;
+    this.userId = this.user.id;
+    axios.get("../api/pantry/" + this.userId) // add user token
+    .then(function (response) {
+      return _this.pantry = response.data;
+    });
+  },
+  computed: {
+    filteredRecipes: function filteredRecipes() {
+      var _this2 = this;
+
+      return this.recipes.filter(function (recipe) {
+        return recipe.recipes_name.toLowerCase().match(_this2.search.toLowerCase());
+      });
+    }
+  },
+  methods: {
+    GetIngredients: function GetIngredients(id) {
+      var _this3 = this;
+
+      axios.get("../api/recipes") // add user token
+      .then(function (response) {
+        return _this3.recipes = response.data;
+      });
     }
   }
 });
@@ -37638,130 +37718,146 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.search,
-          expression: "search"
-        }
-      ],
-      attrs: { type: "text", placeholder: "Find" },
-      domProps: { value: _vm.search },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
+    _c("div", { staticClass: "container" }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.search,
+            expression: "search"
           }
-          _vm.search = $event.target.value
+        ],
+        attrs: { type: "text", placeholder: "Find" },
+        domProps: { value: _vm.search },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.search = $event.target.value
+          }
         }
-      }
-    }),
-    _vm._v(" "),
-    _c("div", { staticClass: "content" }, [
-      _c("div", { staticClass: "container" }, [
+      }),
+      _vm._v("\n\n    Save to pantry\n    "),
+      _c(
+        "select",
+        _vm._l(_vm.pantry, function(pantries) {
+          return _c(
+            "option",
+            { key: pantries.id, domProps: { value: pantries.id } },
+            [_vm._v(_vm._s(pantries))]
+          )
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "fa fa-minus",
+        attrs: { type: "button", "aria-hidden": "true", value: "save" },
+        on: {
+          click: function($event) {
+            return _vm.SaveToPantry()
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "content" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
         _c(
           "div",
-          { staticClass: "row" },
+          { staticClass: "col-md-6" },
           [
             _vm._l(_vm.ingredients, function(ingredient) {
-              return _c("div")
-            }),
-            _vm._v(" "),
-            _vm._l(_vm.filteredIngredients, function(pIngredient, index) {
-              return _c("div", [
-                _c(
-                  "div",
-                  { staticClass: "col-sm-4", staticStyle: { padding: "10px" } },
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "card",
-                        staticStyle: { width: "15rem", height: "13rem" }
-                      },
-                      [
-                        _c("img", {
-                          staticClass: "card-img-top",
-                          attrs: {
-                            src: _vm.GetImagePath(index),
-                            alt: "Card image cap"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "card-body" }, [
-                          _c("h5", { staticClass: "card-title" }, [
-                            _vm._v(_vm._s(pIngredient.name))
-                          ]),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "card-text" }, [
-                            _vm._v(
-                              "   Some quick example text to build on the card title and make up the bulk of the card's content."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("input", {
-                            staticClass: "fa fa-plus",
-                            attrs: {
-                              type: "button",
-                              "aria-hidden": "true",
-                              value: "add"
-                            },
-                            on: {
-                              click: function($event) {
-                                return _vm.AddIngredientToPantry(pIngredient)
-                              }
-                            }
-                          })
-                        ])
-                      ]
-                    )
-                  ]
-                )
-              ])
+              return _c("div", { key: ingredient })
             }),
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "col" },
-              _vm._l(_vm.pantry, function(ingredient, index) {
-                return _c("div", [
-                  _vm._v(
-                    "\n            " +
-                      _vm._s(ingredient.name) +
-                      "\n            "
-                  ),
-                  _c("input", {
-                    staticClass: "fa fa-minus",
-                    attrs: {
-                      type: "button",
-                      "aria-hidden": "true",
-                      value: "remove"
+              { staticClass: "row" },
+              _vm._l(_vm.filteredIngredients, function(pIngredient, index) {
+                return _c("div", { key: pIngredient }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "col-sm-4",
+                      staticStyle: { padding: "10px" }
                     },
-                    on: {
-                      click: function($event) {
-                        return _vm.RemoveIngredientFromPantry(index)
-                      }
-                    }
-                  })
+                    [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "card",
+                          staticStyle: { width: "7rem", height: "9rem" }
+                        },
+                        [
+                          _c("img", {
+                            staticClass: "card-img-top",
+                            attrs: {
+                              src: _vm.GetImagePath(index),
+                              alt: "Card image cap"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "card-body" }, [
+                            _c("h5", { staticClass: "card-title" }, [
+                              _vm._v(_vm._s(pIngredient.name))
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              staticClass: "fa fa-plus",
+                              attrs: {
+                                type: "button",
+                                "aria-hidden": "true",
+                                value: "add"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.AddIngredientToPantry(pIngredient)
+                                }
+                              }
+                            })
+                          ])
+                        ]
+                      )
+                    ]
+                  )
                 ])
               }),
               0
-            ),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "fa fa-minus",
-              attrs: { type: "button", "aria-hidden": "true", value: "save" },
-              on: {
-                click: function($event) {
-                  return _vm.SaveToPantry()
-                }
-              }
-            })
+            )
           ],
           2
-        )
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c(
+            "div",
+            { staticClass: "row" },
+            _vm._l(_vm.pantryArray, function(ingredient, index) {
+              return _c("div", { key: ingredient }, [
+                _vm._v(
+                  "\n            " + _vm._s(ingredient.name) + "\n            "
+                ),
+                _c("input", {
+                  staticClass: "fa fa-minus",
+                  attrs: {
+                    type: "button",
+                    "aria-hidden": "true",
+                    value: "remove"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.RemoveIngredientFromPantry(index)
+                    }
+                  }
+                })
+              ])
+            }),
+            0
+          )
+        ])
       ])
     ])
   ])
@@ -38275,6 +38371,65 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pantry/pantry.vue?vue&type=template&id=5f0d3374&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/pantry/pantry.vue?vue&type=template&id=5f0d3374& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { attrs: { id: "#apps" } }, [
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.search,
+          expression: "search"
+        }
+      ],
+      attrs: { type: "text", placeholder: "Find" },
+      domProps: { value: _vm.search },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.search = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "content" },
+      [
+        _vm._v("\n    " + _vm._s(_vm.userName) + "'s Pantries\n    "),
+        _vm._l(_vm.pantry, function(pantryItem, index) {
+          return _c("div", { key: (pantryItem, index) }, [
+            _vm._v(_vm._s(pantryItem))
+          ])
+        })
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/recipes/createRecipe.vue?vue&type=template&id=d1a37cc2&":
 /*!***********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/recipes/createRecipe.vue?vue&type=template&id=d1a37cc2& ***!
@@ -38401,10 +38556,8 @@ var render = function() {
                   _vm._v(
                     " \r\n                        " +
                       _vm._s(precipe.recipes_name) +
-                      " \r\n                        "
+                      " \r\n                       \r\n                        "
                   ),
-                  _c("img", { attrs: { src: _vm.GetImagePath(index) } }),
-                  _vm._v(" "),
                   _c("input", {
                     staticClass: "fa fa-plus",
                     attrs: {
@@ -50612,6 +50765,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 Vue.use(vue_sweetalert_icons__WEBPACK_IMPORTED_MODULE_0__["default"]);
+Vue.component('pantrylist', __webpack_require__(/*! ./components/pantry/pantry.vue */ "./resources/js/components/pantry/pantry.vue")["default"]);
 Vue.component('ingredientlist', __webpack_require__(/*! ./components/ingredients/IngredientList.vue */ "./resources/js/components/ingredients/IngredientList.vue")["default"]);
 Vue.component('showallrecipes', __webpack_require__(/*! ./components/recipes/showAllRecipes.vue */ "./resources/js/components/recipes/showAllRecipes.vue")["default"]);
 Vue.component('createrecipe', __webpack_require__(/*! ./components/recipes/createRecipe.vue */ "./resources/js/components/recipes/createRecipe.vue")["default"]);
@@ -50813,6 +50967,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_createIngredient_vue_vue_type_template_id_a8637336___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_createIngredient_vue_vue_type_template_id_a8637336___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/pantry/pantry.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/pantry/pantry.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _pantry_vue_vue_type_template_id_5f0d3374___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pantry.vue?vue&type=template&id=5f0d3374& */ "./resources/js/components/pantry/pantry.vue?vue&type=template&id=5f0d3374&");
+/* harmony import */ var _pantry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pantry.vue?vue&type=script&lang=js& */ "./resources/js/components/pantry/pantry.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _pantry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _pantry_vue_vue_type_template_id_5f0d3374___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _pantry_vue_vue_type_template_id_5f0d3374___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/pantry/pantry.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/pantry/pantry.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/pantry/pantry.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_pantry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./pantry.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pantry/pantry.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_pantry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/pantry/pantry.vue?vue&type=template&id=5f0d3374&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/pantry/pantry.vue?vue&type=template&id=5f0d3374& ***!
+  \**********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_pantry_vue_vue_type_template_id_5f0d3374___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./pantry.vue?vue&type=template&id=5f0d3374& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/pantry/pantry.vue?vue&type=template&id=5f0d3374&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_pantry_vue_vue_type_template_id_5f0d3374___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_pantry_vue_vue_type_template_id_5f0d3374___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
