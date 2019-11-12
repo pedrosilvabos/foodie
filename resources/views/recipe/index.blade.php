@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-<showallrecipes> </showallrecipes>
+<showallrecipes  :user="{{ $user }}"> </showallrecipes>
 @endsection

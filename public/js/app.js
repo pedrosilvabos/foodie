@@ -1928,6 +1928,10 @@ __webpack_require__.r(__webpack_exports__);
     .then(function (response) {
       return _this.ingredients = response.data;
     });
+
+    if (this.userId == 0) {
+      this.pantry = [];
+    }
   },
   computed: {
     filteredIngredients: function filteredIngredients() {
@@ -2230,7 +2234,7 @@ __webpack_require__.r(__webpack_exports__);
     this.userId = this.user.id;
     axios.get("../api/pantry/" + this.userId) // add user token
     .then(function (response) {
-      return _this.pantry = response.data;
+      return _this.pantry = response.data.ingredients;
     });
   },
   computed: {
@@ -2367,16 +2371,58 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["user"],
   data: function data() {
     return {
       recipes: [],
       recipeDescription: '',
-      search: ''
+      search: '',
+      ingredients: [],
+      pantry: [],
+      userIngredients: []
     };
   },
   created: function created() {
     var _this = this;
+
+    this.userId = this.user.id;
+    axios.get("../api/pantry/" + this.userId) // add user token
+    .then(function (response) {
+      return _this.pantry = response.data.ingredients;
+    });
+    axios.get("../api/ingredients") // add user token
+    .then(function (response) {
+      return _this.ingredients = response.data;
+    });
+
+    if (this.userId == 0) {
+      this.pantry = [];
+    }
 
     axios.get('../api/recipes') // add user token
     .then(function (response) {
@@ -2398,7 +2444,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('../api/recipes/' + recipe.id) // add user token
       .then(function (response) {
-        return _this3.recipeDescription = response.data;
+        return _this3.recipeDescription = response.data.ingredients;
       });
     },
     RemoverecipeFromPantry: function RemoverecipeFromPantry(index) {
@@ -2409,14 +2455,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     GetImagePath: function GetImagePath(index) {
       return this.recipes[index].recipe_icon;
-    },
-    GetIngredients: function GetIngredients(id) {
-      var _this4 = this;
-
-      axios.get('../api/recipes') // add user token
-      .then(function (response) {
-        return _this4.recipes = response.data;
-      });
     }
   }
 });
@@ -38415,7 +38453,7 @@ var render = function() {
         _vm._v("\n    " + _vm._s(_vm.userName) + "'s Pantries\n    "),
         _vm._l(_vm.pantry, function(pantryItem, index) {
           return _c("div", { key: (pantryItem, index) }, [
-            _vm._v(_vm._s(pantryItem))
+            _vm._v(_vm._s(pantryItem.name))
           ])
         })
       ],
@@ -38540,52 +38578,125 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "content" }, [
       _c("div", { staticClass: "container" }, [
-        _c(
-          "div",
-          { staticClass: "row", attrs: { id: "#app" } },
-          [
-            _vm._l(_vm.recipes, function(recipe) {
-              return _c("div", { key: recipe })
-            }),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col" },
-              _vm._l(_vm.filteredRecipes, function(precipe, index) {
-                return _c("div", { key: (precipe, index) }, [
-                  _vm._v(
-                    " \r\n                        " +
-                      _vm._s(precipe.recipes_name) +
-                      " \r\n                       \r\n                        "
-                  ),
-                  _c("input", {
-                    staticClass: "fa fa-plus",
-                    attrs: {
-                      type: "button",
-                      "aria-hidden": "true",
-                      value: "add"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.ShowRecipe(precipe)
-                      }
+        _c("div", { staticClass: "row", attrs: { id: "#app" } }, [
+          _c(
+            "div",
+            { staticClass: "col" },
+            _vm._l(_vm.filteredRecipes, function(precipe, index) {
+              return _c("div", { key: (precipe, index) }, [
+                _vm._v(
+                  " \r\n                        " +
+                    _vm._s(precipe.recipes_name) +
+                    " \r\n                        "
+                ),
+                _c("input", {
+                  staticClass: "fa fa-plus",
+                  attrs: {
+                    type: "button",
+                    "aria-hidden": "true",
+                    value: "add"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.ShowRecipe(precipe)
                     }
-                  })
-                ])
-              }),
-              0
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col" }, [
+                  }
+                })
+              ])
+            }),
+            0
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col" },
+            [
               _vm._v(
-                "     \r\n                    " +
-                  _vm._s(_vm.recipeDescription) +
-                  " \r\n                "
-              )
-            ])
-          ],
-          2
-        )
+                "\r\n                    all the ingredients the use has\r\n                    "
+              ),
+              _vm._l(_vm.pantry, function(neededIngredient) {
+                return _c("div", { key: neededIngredient.id }, [
+                  _vm._v(
+                    "\r\n                        " +
+                      _vm._s(neededIngredient.name) +
+                      "\r\n                    "
+                  )
+                ])
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col" },
+            [
+              _vm._v(
+                "     \r\n                    needed ingredients you need to buy\r\n                     "
+              ),
+              _vm._l(_vm.recipeDescription, function(neededIngredient) {
+                return _c(
+                  "div",
+                  { key: neededIngredient.id },
+                  _vm._l(
+                    _vm.pantry.slice(0, _vm.recipeDescription.length),
+                    function(userIingredient, index) {
+                      return _c("div", { key: userIingredient.id }, [
+                        neededIngredient.name == userIingredient.name
+                          ? _c("p")
+                          : _c("p", [
+                              _c("b", [_vm._v(_vm._s(neededIngredient.name))])
+                            ])
+                      ])
+                    }
+                  ),
+                  0
+                )
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col" },
+            [
+              _vm._v(
+                "     \r\n                    needed ingredients you need to buy\r\n                     "
+              ),
+              _vm._l(_vm.recipeDescription, function(neededIngredient) {
+                return _c("div", { key: neededIngredient.id }, [
+                  _vm._v(
+                    "  \r\n                        " +
+                      _vm._s(neededIngredient.name) +
+                      "\r\n                    "
+                  )
+                ])
+              })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col" },
+            [
+              _vm._v(
+                "     \r\n                    all the ingredients in the library\r\n                    "
+              ),
+              _vm._l(_vm.ingredients, function(ingredient) {
+                return _c("div", { key: ingredient.id }, [
+                  _vm._v(
+                    "\r\n                        " +
+                      _vm._s(ingredient.name) +
+                      "\r\n                    "
+                  )
+                ])
+              })
+            ],
+            2
+          )
+        ])
       ])
     ])
   ])

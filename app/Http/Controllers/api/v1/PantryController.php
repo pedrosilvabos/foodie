@@ -137,11 +137,14 @@ class PantryController extends Controller
     {
         //
     }
-
-     /**
-     * return the pantry owner user id
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function checkForIngredient()
+    {   
+        $pantry  = [1, 10, 30];
+        $id = [10, 20, 30];
+        
+        $ingredient = Ingredients::find(array_diff($pantry, $id));
+       return  $ingredient;
+        
+    }
+   
 }

@@ -19,6 +19,9 @@ class PantryController extends Controller
     public function index()
     {
         $user = Auth::user();
+        if($user== null){
+            $user = 0;
+        }
         return view('pantry.index', compact('user'));    
     
     }
@@ -108,5 +111,13 @@ class PantryController extends Controller
     {
         //
     }
+
+     /**
+     * check pantry for an array of ingredients
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+
     
 }

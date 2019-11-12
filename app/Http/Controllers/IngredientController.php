@@ -20,10 +20,12 @@ class IngredientController extends Controller
      */
     public function index()
     {
-
+        //maybe we should use auth middleware
         $ingredients = Ingredients::all();
         $user = Auth::user();
-
+        if($user== null){
+            $user = 0;
+        }
         return view('ingredient.index', compact('ingredients', 'user'));
     }
 

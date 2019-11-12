@@ -85,6 +85,9 @@ export default {
     axios
       .get("../api/ingredients") // add user token
       .then(response => (this.ingredients = response.data));
+      if(this.userId == 0){
+        this.pantry = [];
+      }
   },
   computed: {
     filteredIngredients: function() {
@@ -115,6 +118,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>

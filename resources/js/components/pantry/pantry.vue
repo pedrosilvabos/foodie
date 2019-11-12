@@ -3,7 +3,7 @@
     <input type="text" v-model="search" placeholder="Find" />
     <div class="content">
       {{userName}}'s Pantries
-      <div v-for="(pantryItem, index) in pantry" :key="(pantryItem, index)">{{pantryItem}}</div>
+      <div v-for="(pantryItem, index) in pantry" :key="(pantryItem, index)">{{pantryItem.name}}</div>
     </div>
   </div>
 </template>
@@ -23,7 +23,9 @@ export default {
     this.userId = this.user.id;
     axios
       .get("../api/pantry/" + this.userId) // add user token
-      .then(response => (this.pantry = response.data));
+      .then(response => (this.pantry = response.data.ingredients))
+     
+      
   },
   computed: {
     filteredRecipes: function() {
