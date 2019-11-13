@@ -19,10 +19,13 @@
                 </div>
                  <div class="col">     
                     needed ingredients you need to buy
-                     <div v-for="(neededIngredient) in recipeDescription" :key="neededIngredient.id">
-                        <div v-for="(userIingredient, index) in pantry.slice(0,recipeDescription.length)" :key="userIingredient.id">
-                            <p v-if="(neededIngredient.name==userIingredient.name)"></p>
-                            <p v-else> <b>{{neededIngredient.name}}</b></p>
+                   
+                       
+                        <div v-for="(userIingredient) in pantry.slice(0,pantry.length)" :key="userIingredient.name">
+                              <div v-for="(neededIngredient) in recipeDescription" :key="neededIngredient.name">
+                                  {{neededIngredient.name}} is {{userIingredient.name}}
+                            <p v-if="((neededIngredient.name==userIingredient.name))"></p>
+                            <p v-else> <b></b></p>
                         </div>       
                     </div>
                 </div>

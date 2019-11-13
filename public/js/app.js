@@ -2395,6 +2395,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["user"],
   data: function data() {
@@ -38632,24 +38635,28 @@ var render = function() {
             { staticClass: "col" },
             [
               _vm._v(
-                "     \r\n                    needed ingredients you need to buy\r\n                     "
+                "     \r\n                    needed ingredients you need to buy\r\n                   \r\n                       \r\n                        "
               ),
-              _vm._l(_vm.recipeDescription, function(neededIngredient) {
+              _vm._l(_vm.pantry.slice(0, _vm.pantry.length), function(
+                userIingredient
+              ) {
                 return _c(
                   "div",
-                  { key: neededIngredient.id },
-                  _vm._l(
-                    _vm.pantry.slice(0, _vm.recipeDescription.length),
-                    function(userIingredient, index) {
-                      return _c("div", { key: userIingredient.id }, [
-                        neededIngredient.name == userIingredient.name
-                          ? _c("p")
-                          : _c("p", [
-                              _c("b", [_vm._v(_vm._s(neededIngredient.name))])
-                            ])
-                      ])
-                    }
-                  ),
+                  { key: userIingredient.name },
+                  _vm._l(_vm.recipeDescription, function(neededIngredient) {
+                    return _c("div", { key: neededIngredient.name }, [
+                      _vm._v(
+                        "\r\n                                  " +
+                          _vm._s(neededIngredient.name) +
+                          " is " +
+                          _vm._s(userIingredient.name) +
+                          "\r\n                            "
+                      ),
+                      neededIngredient.name == userIingredient.name
+                        ? _c("p")
+                        : _c("p", [_c("b")])
+                    ])
+                  }),
                   0
                 )
               })
