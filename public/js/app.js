@@ -2393,6 +2393,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["user"],
   data: function data() {
@@ -2403,6 +2407,8 @@ __webpack_require__.r(__webpack_exports__);
       ingredients: [],
       pantry: [],
       userIngredients: [],
+      pantryIngredients: [],
+      recipeIngredients: [],
       cart: []
     };
   },
@@ -2432,18 +2438,26 @@ __webpack_require__.r(__webpack_exports__);
     filteredRecipes: function filteredRecipes() {
       var _this2 = this;
 
+      this.recipeIngredients = [];
+      this.pantryIngredients = [];
+
       if (this.recipeDescription.length != 0) {
-        console.log('inside if');
         var i = 0;
         var j = 0;
+        var k = 0;
 
         for (i; i < this.recipeDescription.length; i++) {
-          for (j; j < this.pantry.length; j++) {
-            if (this.recipeDescription[i].name == this.pantry[j].name) {
-              console.log('match!');
-            } else {
-              if (this.cart.includes(this.recipeDescription[i].name) != true) this.cart.push(this.recipeDescription[i].name);
-            }
+          this.recipeIngredients.push(this.recipeDescription[i]);
+        }
+
+        for (j; j < this.pantry.length; j++) {
+          this.pantryIngredients.push(this.pantry[j].name);
+        }
+
+        for (k; k < this.recipeIngredients.length; k++) {
+          if (this.pantryIngredients.includes(this.recipeIngredients[k].name) != true) {
+            this.cart.push(this.recipeIngredients[k].name);
+            console.log('pushed');
           }
         }
       }
@@ -2460,7 +2474,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('../api/recipes/' + recipe.id) // add user token
       .then(function (response) {
         return _this3.recipeDescription = response.data.ingredients;
-      }), console.log(recipeDescription);
+      });
     },
     RemoverecipeFromPantry: function RemoverecipeFromPantry(index) {
       this.pantry.splice(index, 1);
@@ -38596,7 +38610,7 @@ var render = function() {
         _c("div", { staticClass: "row", attrs: { id: "#app" } }, [
           _c(
             "div",
-            { staticClass: "col" },
+            { staticClass: "col-3" },
             _vm._l(_vm.filteredRecipes, function(precipe, index) {
               return _c("div", { key: (precipe, index) }, [
                 _vm._v(
@@ -38613,7 +38627,47 @@ var render = function() {
                   },
                   on: {
                     click: function($event) {
-                      return _vm.ShowRecipe(precipe, _vm.recipeDescription)
+                      return _vm.ShowRecipe(
+                        precipe,
+                        _vm.recipeDescription,
+                        (_vm.action = "add")
+                      )
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "fa fa-plus",
+                  attrs: {
+                    type: "button",
+                    "aria-hidden": "true",
+                    value: "details"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.ShowRecipe(
+                        precipe,
+                        _vm.recipeDescription,
+                        (_vm.action = "show")
+                      )
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "fa fa-plus",
+                  attrs: {
+                    type: "button",
+                    "aria-hidden": "true",
+                    value: "remove"
+                  },
+                  on: {
+                    click: function($event) {
+                      return _vm.ShowRecipe(
+                        precipe,
+                        _vm.recipeDescription,
+                        (_vm.action = "remove")
+                      )
                     }
                   }
                 })
@@ -38624,7 +38678,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "col" },
+            { staticClass: "col-3" },
             [
               _vm._v(
                 "\r\n                    all the ingredients the use has\r\n                    "
@@ -38646,7 +38700,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "col" },
+            { staticClass: "col-2" },
             [
               _vm._v(
                 "     \r\n                    needed ingredients you need to buy\r\n                        "
@@ -38666,7 +38720,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "col" },
+            { staticClass: "col-2" },
             [
               _vm._v(
                 "     \r\n                    needed ingredients you need to make recipe\r\n                     "
@@ -38688,7 +38742,7 @@ var render = function() {
           _vm._v(" "),
           _c(
             "div",
-            { staticClass: "col" },
+            { staticClass: "col-2" },
             [
               _vm._v(
                 "     \r\n                    all the ingredients in the library\r\n                    "
@@ -38697,6 +38751,8 @@ var render = function() {
                 return _c("div", { key: ingredient.id }, [
                   _vm._v(
                     "\r\n                        " +
+                      _vm._s(ingredient.id) +
+                      " - " +
                       _vm._s(ingredient.name) +
                       "\r\n                    "
                   )
