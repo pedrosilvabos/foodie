@@ -8,31 +8,26 @@
                 <div class="col">
                     <div v-for="(precipe, index) in filteredRecipes" :key="(precipe, index)"> 
                         {{ precipe.recipes_name }} 
-                        <input type="button" class="fa fa-plus" aria-hidden="true" v-on:click="ShowRecipe(precipe)" value="add">
+                        <input type="button" class="fa fa-plus" aria-hidden="true" v-on:click="ShowRecipe(precipe,recipeDescription)" value="add">
                     </div>
                 </div>
                 <div class="col">
                     all the ingredients the use has
-                    <div v-for="neededIngredient in pantry" :key="neededIngredient.id">
-                        {{ neededIngredient.name }}
+                    <div v-for="userIngredient in pantry" :key="userIngredient.id">
+                        {{ userIngredient.id }} - {{ userIngredient.name }}
                     </div>
                 </div>
                  <div class="col">     
                     needed ingredients you need to buy
-                   
-                       
-                        <div v-for="(userIingredient) in pantry.slice(0,pantry.length)" :key="userIingredient.name">
-                              <div v-for="(neededIngredient) in recipeDescription" :key="neededIngredient.name">
-                                  {{neededIngredient.name}} is {{userIingredient.name}}
-                            <p v-if="((neededIngredient.name==userIingredient.name))"></p>
-                            <p v-else> <b></b></p>
-                        </div>       
+                        <div v-for="(userIngredient) in cart" :key="userIngredient.id">
+                         
+                            {{userIngredient}}
                     </div>
                 </div>
                 <div class="col">     
-                    needed ingredients you need to buy
+                    needed ingredients you need to make recipe
                      <div v-for="(neededIngredient) in recipeDescription" :key="neededIngredient.id">  
-                        {{neededIngredient.name}}
+                        {{ neededIngredient.id }} - {{neededIngredient.name}}
                     </div>
                 </div>
                  
@@ -56,11 +51,13 @@
         data(){
             return {
                 recipes : [],
-                recipeDescription: '',
+                recipeDescription: [],
                 search:'',
                 ingredients: [],
                 pantry: [],
                 userIngredients: [],
+                cart:[],
+               
             }
 
         },
@@ -74,27 +71,44 @@
         .get("../api/ingredients") // add user token
         .then(response => (this.ingredients = response.data));
        
-
-
         if(this.userId == 0){
             this.pantry = [];
-      }
+        }
             axios.get('../api/recipes') // add user token
             .then(response => this.recipes = response.data)
 
         },
+       
         computed: {
             filteredRecipes: function(){
-             
+
+         
+                 if(this.recipeDescription.length != 0){
+                     console.log('inside if')
+                     var i = 0;
+                     var j = 0;
+                     for (i;i<this.recipeDescription.length;i++){
+                         for(j;j<this.pantry.length;j++){
+                             if(this.recipeDescription[i].name == this.pantry[j].name){
+                                 console.log('match!');
+                             }else{
+                                 if(this.cart.includes(this.recipeDescription[i].name) != true)
+                                  this.cart.push(this.recipeDescription[i].name);
+                             }
+                         }
+                     }
+                 }
+                 
                 return this.recipes.filter((recipe) => {
                     return recipe.recipes_name.toLowerCase().match(this.search.toLowerCase());
                 });
             }
         },
         methods: {
-            ShowRecipe: function(recipe){
+            ShowRecipe: function(recipe,recipeDescription){
             axios.get('../api/recipes/' + recipe.id) // add user token
-            .then(response => this.recipeDescription = response.data.ingredients)
+            .then(response => this.recipeDescription = response.data.ingredients),
+            console.log(recipeDescription)
             },
             RemoverecipeFromPantry: function(index){
                 this.pantry.splice(index,1);

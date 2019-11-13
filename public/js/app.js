@@ -2393,21 +2393,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["user"],
   data: function data() {
     return {
       recipes: [],
-      recipeDescription: '',
+      recipeDescription: [],
       search: '',
       ingredients: [],
       pantry: [],
-      userIngredients: []
+      userIngredients: [],
+      cart: []
     };
   },
   created: function created() {
@@ -2436,19 +2432,35 @@ __webpack_require__.r(__webpack_exports__);
     filteredRecipes: function filteredRecipes() {
       var _this2 = this;
 
+      if (this.recipeDescription.length != 0) {
+        console.log('inside if');
+        var i = 0;
+        var j = 0;
+
+        for (i; i < this.recipeDescription.length; i++) {
+          for (j; j < this.pantry.length; j++) {
+            if (this.recipeDescription[i].name == this.pantry[j].name) {
+              console.log('match!');
+            } else {
+              if (this.cart.includes(this.recipeDescription[i].name) != true) this.cart.push(this.recipeDescription[i].name);
+            }
+          }
+        }
+      }
+
       return this.recipes.filter(function (recipe) {
         return recipe.recipes_name.toLowerCase().match(_this2.search.toLowerCase());
       });
     }
   },
   methods: {
-    ShowRecipe: function ShowRecipe(recipe) {
+    ShowRecipe: function ShowRecipe(recipe, recipeDescription) {
       var _this3 = this;
 
       axios.get('../api/recipes/' + recipe.id) // add user token
       .then(function (response) {
         return _this3.recipeDescription = response.data.ingredients;
-      });
+      }), console.log(recipeDescription);
     },
     RemoverecipeFromPantry: function RemoverecipeFromPantry(index) {
       this.pantry.splice(index, 1);
@@ -38601,7 +38613,7 @@ var render = function() {
                   },
                   on: {
                     click: function($event) {
-                      return _vm.ShowRecipe(precipe)
+                      return _vm.ShowRecipe(precipe, _vm.recipeDescription)
                     }
                   }
                 })
@@ -38617,11 +38629,13 @@ var render = function() {
               _vm._v(
                 "\r\n                    all the ingredients the use has\r\n                    "
               ),
-              _vm._l(_vm.pantry, function(neededIngredient) {
-                return _c("div", { key: neededIngredient.id }, [
+              _vm._l(_vm.pantry, function(userIngredient) {
+                return _c("div", { key: userIngredient.id }, [
                   _vm._v(
                     "\r\n                        " +
-                      _vm._s(neededIngredient.name) +
+                      _vm._s(userIngredient.id) +
+                      " - " +
+                      _vm._s(userIngredient.name) +
                       "\r\n                    "
                   )
                 ])
@@ -38635,30 +38649,16 @@ var render = function() {
             { staticClass: "col" },
             [
               _vm._v(
-                "     \r\n                    needed ingredients you need to buy\r\n                   \r\n                       \r\n                        "
+                "     \r\n                    needed ingredients you need to buy\r\n                        "
               ),
-              _vm._l(_vm.pantry.slice(0, _vm.pantry.length), function(
-                userIingredient
-              ) {
-                return _c(
-                  "div",
-                  { key: userIingredient.name },
-                  _vm._l(_vm.recipeDescription, function(neededIngredient) {
-                    return _c("div", { key: neededIngredient.name }, [
-                      _vm._v(
-                        "\r\n                                  " +
-                          _vm._s(neededIngredient.name) +
-                          " is " +
-                          _vm._s(userIingredient.name) +
-                          "\r\n                            "
-                      ),
-                      neededIngredient.name == userIingredient.name
-                        ? _c("p")
-                        : _c("p", [_c("b")])
-                    ])
-                  }),
-                  0
-                )
+              _vm._l(_vm.cart, function(userIngredient) {
+                return _c("div", { key: userIngredient.id }, [
+                  _vm._v(
+                    "\r\n                         \r\n                            " +
+                      _vm._s(userIngredient) +
+                      "\r\n                    "
+                  )
+                ])
               })
             ],
             2
@@ -38669,12 +38669,14 @@ var render = function() {
             { staticClass: "col" },
             [
               _vm._v(
-                "     \r\n                    needed ingredients you need to buy\r\n                     "
+                "     \r\n                    needed ingredients you need to make recipe\r\n                     "
               ),
               _vm._l(_vm.recipeDescription, function(neededIngredient) {
                 return _c("div", { key: neededIngredient.id }, [
                   _vm._v(
                     "  \r\n                        " +
+                      _vm._s(neededIngredient.id) +
+                      " - " +
                       _vm._s(neededIngredient.name) +
                       "\r\n                    "
                   )
