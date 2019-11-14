@@ -13,7 +13,7 @@ $faker->addProvider(new \FakerRestaurant\Provider\en_US\Restaurant($faker));
         
         'name' => $faker->vegetableName(),
         'type' => $faker->text(20),
-        'quantity_kg' => $faker->randomFloat($nbMaxDecimals = 1, $min = 0, $max = 10),
+        'quantity_gr' => $faker->randomFloat($nbMaxDecimals = 1, $min = 0, $max = 1000),
         'icon' => $faker->image($dir = public_path('images/icons'), $width = 100, $height = 100, 'cats'),
         'proteins' => $faker->randomFloat($nbMaxDecimals = 0, $min = 0, $max = 900),
         'calories' => $faker->randomFloat($nbMaxDecimals = 0, $min = 0, $max = 900),

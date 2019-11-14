@@ -19,7 +19,7 @@ class Ingredients extends Migration
             $table->string('type');
             $table->float('servings',4,1);
             $table->float('price',4,2);
-            $table->float('quantity_kg',4,2);
+            $table->float('quantity_gr',5,2);
             $table->float('proteins',5,2);
             $table->float('calories',5,2);
             $table->float('lifetime',5,2);

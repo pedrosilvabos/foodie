@@ -2391,25 +2391,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["user"],
   data: function data() {
     return {
       recipes: [],
-      recipeDescription: [],
+      recipeDescription: {
+        ingredients: []
+      },
       search: '',
       ingredients: [],
       pantry: [],
       userIngredients: [],
       pantryIngredients: [],
       recipeIngredients: [],
-      cart: []
+      cart: [],
+      menu: []
     };
   },
   created: function created() {
@@ -2441,23 +2438,85 @@ __webpack_require__.r(__webpack_exports__);
       this.recipeIngredients = [];
       this.pantryIngredients = [];
 
-      if (this.recipeDescription.length != 0) {
+      if (this.recipeDescription.ingredients.length != 0) {
         var i = 0;
         var j = 0;
         var k = 0;
+        var l = 0; //create and array with ingredients for the recipe
 
-        for (i; i < this.recipeDescription.length; i++) {
-          this.recipeIngredients.push(this.recipeDescription[i]);
-        }
+        for (i; i < this.recipeDescription.ingredients.length; i++) {
+          this.recipeIngredients.push(this.recipeDescription.ingredients[i]);
+        } //create an array with the ingredients in the pantry
+
 
         for (j; j < this.pantry.length; j++) {
           this.pantryIngredients.push(this.pantry[j].name);
-        }
+        } //compares the ingredient in the recipe to every single one in the pantry
+
 
         for (k; k < this.recipeIngredients.length; k++) {
-          if (this.pantryIngredients.includes(this.recipeIngredients[k].name) != true) {
-            this.cart.push(this.recipeIngredients[k].name);
-            console.log('pushed');
+          if (this.pantryIngredients.includes(this.recipeIngredients[k].name) == true) {
+            var nameOfIngredientForRecipe = this.recipeIngredients[k].name;
+            var quantityOfIngredientForRecipe = this.recipeIngredients[k].quantity_gr / this.recipeIngredients[k].servings;
+            var indexOfIngredientInPantry = this.pantryIngredients.indexOf(this.recipeIngredients[k].name);
+            var nameOfIngredientInPantry = this.pantry[indexOfIngredientInPantry].name;
+            var quantityOfIngredientInPantry = this.pantry[indexOfIngredientInPantry].quantity_gr; //check if user has enough of ingredient for recipe 
+
+            console.log(quantityOfIngredientInPantry);
+            console.log(quantityOfIngredientForRecipe);
+            console.log(quantityOfIngredientInPantry - quantityOfIngredientForRecipe);
+
+            if (quantityOfIngredientInPantry - quantityOfIngredientForRecipe >= 0) {
+              //if user has enough, subtract portion from pantry
+              this.pantry[indexOfIngredientInPantry].quantity_gr = quantityOfIngredientInPantry - quantityOfIngredientForRecipe;
+            } else {
+              //if user does not have enough, add to buy list
+              console.log('not enought need to buy');
+
+              if (this.cart.length > 0) {
+                console.log('looking in cart');
+                var m = 0;
+                var cartItems = [];
+
+                for (m; m < this.cart.length; m++) {
+                  cartItems.push(this.cart[m].name);
+                }
+
+                if (cartItems.includes(this.recipeIngredients[k].name)) {
+                  console.log('found in cart, adding quantity');
+                  this.cart[cartItems.indexOf(this.recipeIngredients[k].name)].quantity_gr += this.recipeIngredients[k].quantity_gr;
+                } else {
+                  console.log('not found in cart, adding');
+                  this.cart.push(this.recipeIngredients[k]);
+                }
+              } else {
+                console.log('oh!, first item');
+                this.cart.push(this.recipeIngredients[k]);
+              }
+            }
+          } else {
+            console.log('not found in pantry, looking for ingredient in cart'); //look for it in the cart, remember that the first time you check, the cart is empty!
+
+            if (this.cart.length > 0) {
+              console.log('looking in cart');
+              var m = 0;
+              var cartItems = [];
+
+              for (m; m < this.cart.length; m++) {
+                cartItems.push(this.cart[m].name);
+              }
+
+              if (cartItems.includes(this.recipeIngredients[k].name)) {
+                console.log('found in cart, adding quantity');
+                this.cart[cartItems.indexOf(this.recipeIngredients[k].name)].quantity_gr += this.recipeIngredients[k].quantity_gr;
+              } else {
+                console.log('not found in cart, adding');
+                this.cart.push(this.recipeIngredients[k]);
+              }
+            } else {
+              console.log('oh!, first item');
+              this.cart.push(this.recipeIngredients[k]);
+            }
           }
         }
       }
@@ -2473,7 +2532,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('../api/recipes/' + recipe.id) // add user token
       .then(function (response) {
-        return _this3.recipeDescription = response.data.ingredients;
+        return _this3.recipeDescription = response.data;
       });
     },
     RemoverecipeFromPantry: function RemoverecipeFromPantry(index) {
@@ -38687,7 +38746,7 @@ var render = function() {
                 return _c("div", { key: userIngredient.id }, [
                   _vm._v(
                     "\r\n                        " +
-                      _vm._s(userIngredient.id) +
+                      _vm._s(userIngredient.quantity_gr) +
                       " - " +
                       _vm._s(userIngredient.name) +
                       "\r\n                    "
@@ -38703,13 +38762,15 @@ var render = function() {
             { staticClass: "col-2" },
             [
               _vm._v(
-                "     \r\n                    needed ingredients you need to buy\r\n                        "
+                "     \r\n                    needed ingredients you need to buy\r\n                    "
               ),
               _vm._l(_vm.cart, function(userIngredient) {
                 return _c("div", { key: userIngredient.id }, [
                   _vm._v(
-                    "\r\n                         \r\n                            " +
-                      _vm._s(userIngredient) +
+                    "\r\n                        " +
+                      _vm._s(userIngredient.quantity_gr) +
+                      "  " +
+                      _vm._s(userIngredient.name) +
                       "\r\n                    "
                   )
                 ])
@@ -38723,14 +38784,18 @@ var render = function() {
             { staticClass: "col-2" },
             [
               _vm._v(
-                "     \r\n                    needed ingredients you need to make recipe\r\n                     "
+                "     \r\n                    needed ingredients to make recipe\r\n                    "
               ),
-              _vm._l(_vm.recipeDescription, function(neededIngredient) {
+              _vm._l(_vm.recipeDescription.ingredients, function(
+                neededIngredient
+              ) {
                 return _c("div", { key: neededIngredient.id }, [
                   _vm._v(
                     "  \r\n                        " +
-                      _vm._s(neededIngredient.id) +
-                      " - " +
+                      _vm._s(
+                        neededIngredient.quantity_gr / neededIngredient.servings
+                      ) +
+                      "gr " +
                       _vm._s(neededIngredient.name) +
                       "\r\n                    "
                   )
@@ -38745,15 +38810,13 @@ var render = function() {
             { staticClass: "col-2" },
             [
               _vm._v(
-                "     \r\n                    all the ingredients in the library\r\n                    "
+                "     \r\n                   menu list\r\n                    "
               ),
-              _vm._l(_vm.ingredients, function(ingredient) {
-                return _c("div", { key: ingredient.id }, [
+              _vm._l(_vm.menu, function(recipe) {
+                return _c("div", { key: recipe.id }, [
                   _vm._v(
                     "\r\n                        " +
-                      _vm._s(ingredient.id) +
-                      " - " +
-                      _vm._s(ingredient.name) +
+                      _vm._s(recipe) +
                       "\r\n                    "
                   )
                 ])
