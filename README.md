@@ -9,7 +9,7 @@ clone
  <ul>php artisan passport:install</ul> 
  <ul>php artisan vendor:publish --tag=passport-components</ul>
  <ul>php artisan db:seed --class=RecipeTableSeeder -v </ul>
-
+    <ul>php artisan key:generate</ul>
  <ul>php artisan serve</ul>
  <ul>npm run watch</ul>
 </li>
