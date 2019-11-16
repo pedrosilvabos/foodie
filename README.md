@@ -2,14 +2,14 @@
 
 clone
 
-<li>
-  <ul>composer install </ul>
- <ul>npm install</ul>
- <ul>php artisan migrate</ul>
- <ul>php artisan passport:install</ul> 
- <ul>php artisan vendor:publish --tag=passport-components</ul>
- <ul>php artisan db:seed --class=RecipeTableSeeder -v </ul>
-    <ul>php artisan key:generate</ul>
- <ul>php artisan serve</ul>
- <ul>npm run watch</ul>
+<ul>
+  <li>composer install </li>
+ <li>npm install</li>
+ <li>php artisan migrate</li>
+ <li>php artisan passport:install</li> 
+ <li>php artisan vendor:publish --tag=passport-components</li>
+ <li>php artisan db:seed --class=RecipeTableSeeder -v </li>
+ <li>php artisan key:generate</li>
+ <li>php artisan serve</li>
+ <li>npm run watch</li>
 </li>
