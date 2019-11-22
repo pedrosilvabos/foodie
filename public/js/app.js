@@ -2135,7 +2135,7 @@ __webpack_require__.r(__webpack_exports__);
         type: "",
         servings: "",
         price: "",
-        quantity_kg: "",
+        quantity_gr: "",
         proteins: "",
         calories: "",
         lifetime: "",
@@ -2156,7 +2156,7 @@ __webpack_require__.r(__webpack_exports__);
           type: this.ingredient.type,
           servings: this.ingredient.servings,
           price: this.ingredient.price,
-          quantity_kg: this.ingredient.quantity_kg,
+          quantity_gr: this.ingredient.quantity_gr,
           proteins: this.ingredient.proteins,
           calories: this.ingredient.calories,
           lifetime: this.ingredient.lifetime,
@@ -38263,15 +38263,15 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.ingredient.quantity_kg,
-                    expression: "ingredient.quantity_kg"
+                    value: _vm.ingredient.quantity_gr,
+                    expression: "ingredient.quantity_gr"
                   }
                 ],
                 staticClass: "form-control",
                 class: {
                   "form-control": true,
-                  "is-invalid": _vm.ingredient.quantity_kg < 1,
-                  "is-valid": _vm.ingredient.quantity_kg >= 1
+                  "is-invalid": _vm.ingredient.quantity_gr < 1,
+                  "is-valid": _vm.ingredient.quantity_gr >= 1
                 },
                 attrs: {
                   placeholder: "ex: 6.00",
@@ -38279,13 +38279,13 @@ var render = function() {
                   step: "any",
                   required: ""
                 },
-                domProps: { value: _vm.ingredient.quantity_kg },
+                domProps: { value: _vm.ingredient.quantity_gr },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.$set(_vm.ingredient, "quantity_kg", $event.target.value)
+                    _vm.$set(_vm.ingredient, "quantity_gr", $event.target.value)
                   }
                 }
               }),

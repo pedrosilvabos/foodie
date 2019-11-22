@@ -76,10 +76,10 @@
                 placeholder="ex: 6.00"
                 type="number"
                 step="any"
-                v-model="ingredient.quantity_kg"
+                v-model="ingredient.quantity_gr"
                 class="form-control"
                 required
-                v-bind:class="{'form-control':true, 'is-invalid' : (ingredient.quantity_kg < 1), 'is-valid' : (ingredient.quantity_kg >= 1)}"
+                v-bind:class="{'form-control':true, 'is-invalid' : (ingredient.quantity_gr < 1), 'is-valid' : (ingredient.quantity_gr >= 1)}"
               />
               <div class="valid-feedback">Looks good!</div>
               <div class="invalid-feedback">Invalid quantity</div>
@@ -160,7 +160,7 @@ export default {
         type: "",
         servings: "",
         price: "",
-        quantity_kg: "",
+        quantity_gr: "",
         proteins: "",
         calories: "",
         lifetime: "",
@@ -180,7 +180,7 @@ export default {
             type: this.ingredient.type,
             servings: this.ingredient.servings,
             price: this.ingredient.price,
-            quantity_kg: this.ingredient.quantity_kg,
+            quantity_gr: this.ingredient.quantity_gr,
             proteins: this.ingredient.proteins,
             calories: this.ingredient.calories,
             lifetime: this.ingredient.lifetime,

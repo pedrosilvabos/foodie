@@ -13,7 +13,7 @@ class Ingredients extends Model
         'type',
         'servings',
         'price',
-        'quantity_kg',
+        'quantity_gr',
         'proteins',
         'calories',
         'lifetime',

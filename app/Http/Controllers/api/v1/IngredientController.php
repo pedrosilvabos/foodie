@@ -33,7 +33,7 @@ class IngredientController extends Controller
         $ingredient->type = $request->type;
         $ingredient->price = $request->price;
         $ingredient->servings = $request->servings;
-        $ingredient->quantity_kg = $request->quantity_kg;
+        $ingredient->quantity_gr = $request->quantity_gr;
         $ingredient->proteins = $request->proteins;
         $ingredient->calories = $request->calories;
         $ingredient->lifetime = $request->lifetime;
@@ -76,7 +76,7 @@ class IngredientController extends Controller
         $ingredient->name = $request->name;
         $ingredient->type = $request->name;
         $ingredient->price = $request->name;
-        $ingredient->quantity_kg = $request->name;
+        $ingredient->quantity_gr = $request->name;
         $ingredient->proteins = $request->name;
         $ingredient->calories = $request->name;
         $ingredient->lifetime = $request->name;
