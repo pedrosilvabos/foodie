@@ -2,16 +2,16 @@
   <div>
     <div class="container">
       <input type="text" v-model="search" placeholder="Find" />
-
-      Save to pantry
+      this component shows all ingredients existant
       <select>
+        <!-- get the user pantry -->
         <option
           v-for="(pantries) in pantry"
-       
+          :key="pantries.id"
           :value="pantries.id"
         >{{ pantries }}</option>
       </select>
-
+        <!-- button to save ingredients to pantry -->
       <input
         type="button"
         class="fa fa-minus"
@@ -22,9 +22,9 @@
       <div class="content"></div>
       <div class="row">
         <div class="col-md-6">
-          <div v-for="ingredient in ingredients"></div>
+          <div v-for="ingredient in ingredients" :key="ingredient"></div>
           <div class="row">
-            <div v-for="(pIngredient, index) in filteredIngredients">
+            <div v-for="(pIngredient, index) in filteredIngredients" :key="pIngredient">
               <div class="col-sm-4" style="padding:10px">
                 <div class="card" style="width: 7rem; height: 9rem">
                   <img class="card-img-top" :src="GetImagePath(index)" alt="Card image cap" />
@@ -45,7 +45,7 @@
         </div>
         <div class="col-md-6">
           <div class="row">
-            <div v-for="(ingredient, index) in pantryArray">
+            <div v-for="(ingredient, index) in pantryArray" :key="ingredient">
               {{ ingredient.name }}
               <input
                 type="button"
@@ -100,7 +100,7 @@ export default {
     AddIngredientToPantry: function(ingredient) {
       this.pantryArray.push(ingredient);
       this.ClearCart();
-      this.$emit('ingredientArray', ingredient)
+      this.$emit('ingredientArray', this.pantryArray)
     },
     RemoveIngredientFromPantry: function(index) {
       this.pantryArray.splice(index, 1);

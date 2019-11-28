@@ -1946,6 +1946,7 @@ __webpack_require__.r(__webpack_exports__);
     AddIngredientToPantry: function AddIngredientToPantry(ingredient) {
       this.pantryArray.push(ingredient);
       this.ClearCart();
+      this.$emit('ingredientArray', ingredient);
     },
     RemoveIngredientFromPantry: function RemoveIngredientFromPantry(index) {
       this.pantryArray.splice(index, 1);
@@ -2281,56 +2282,180 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["user"],
   data: function data() {
     return {
-      recipes: [],
-      wroteMessage: message,
-      search: ''
+      status: "",
+      selectedIngredients: [],
+      selectedIngredientsId: [],
+      calories: 0,
+      proteins: 0,
+      recipe: {
+        recipes_name: "",
+        recipes_type: [1, 2, 3],
+        recipes_cost: "",
+        recipes_discription: "",
+        recipes_protein: "",
+        created_at: "",
+        updated_at: "",
+        ingredients: []
+      }
     };
   },
-  created: function created() {
-    var _this = this;
-
-    axios.get('../api/recipes') // add user token
-    .then(function (response) {
-      return _this.recipes = response.data;
-    });
-  },
-  computed: {
-    filteredRecipes: function filteredRecipes() {
-      var _this2 = this;
-
-      return this.recipes.filter(function (recipe) {
-        return recipe.recipes_name.toLowerCase().match(_this2.search.toLowerCase());
-      });
-    }
+  mounted: function mounted() {
+    console.log("Recipe Creator Component Loaded...");
   },
   methods: {
-    ShowRecipe: function ShowRecipe(recipe) {
-      var _this3 = this;
+    saveForm: function saveForm() {
+      var _this = this;
 
-      axios.get('../api/recipes/' + recipe.id) // add user token
+      axios.post("../api/recipes", null, {
+        params: {
+          recipes_name: this.recipe.recipes_name,
+          recipes_type: this.recipe.recipes_type,
+          recipes_cost: this.recipe.recipes_cost,
+          recipes_discription: this.recipe.recipes_discription,
+          recipes_protein: this.recipe.recipes_protein,
+          ingredients: this.selectedIngredientsId
+        }
+      }) // add user token
       .then(function (response) {
-        return _this3.recipeDescription = response.data;
+        if (response.status === 200) {
+          (function (response) {
+            return _this.recipe = response.data;
+          }), _this.status = "200";
+          setTimeout(function () {
+            document.getElementById("status").style.display = "none";
+          }, 3000);
+        } else {
+          // throw error and go to catch
+          throw new Error("Error");
+        }
+      })["catch"](function (error) {
+        //when throw "Error" is executed it runs the catch block code
+        _this.status = "500";
+        setTimeout(function () {
+          document.getElementById("status").style.display = "none";
+        }, 3000);
       });
     },
-    RemoverecipeFromPantry: function RemoverecipeFromPantry(index) {
-      this.pantry.splice(index, 1);
+    updateContact: function updateContact(id) {
+      console.log(this.contact);
+      console.log("Updating contact " + id + "...");
+      return;
     },
-    ClearCart: function ClearCart() {
-      this.recipe = {};
+    countDownChanged: function countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown;
     },
-    GetImagePath: function GetImagePath(index) {
-      return this.recipes[index].recipe_icon;
+    showAlert: function showAlert() {
+      this.dismissCountDown = this.dismissSecs;
     },
-    GetIngredients: function GetIngredients(id) {
-      var _this4 = this;
+    udpateArray: function udpateArray(ingredientsForRecipe) {
+      console.log('updated array'); //clear out the array so you dont overlap it, this should be fixed ASAP!
 
-      axios.get('../api/recipes') // add user token
-      .then(function (response) {
-        return _this4.recipes = response.data;
-      });
+      this.selectedIngredients.push(ingredientsForRecipe);
+      console.log(ingredientsForRecipe);
+      this.selectedIngredientsId = [];
+
+      for (var i = 0; i < this.selectedIngredients.length; i++) {
+        this.selectedIngredientsId.push(this.selectedIngredients[i].id);
+        this.calories += this.selectedIngredients[i].calories;
+        this.proteins += this.selectedIngredients[i].proteins;
+      }
     }
   }
 });
@@ -37869,11 +37994,9 @@ var render = function() {
       _c(
         "select",
         _vm._l(_vm.pantry, function(pantries) {
-          return _c(
-            "option",
-            { key: pantries.id, domProps: { value: pantries.id } },
-            [_vm._v(_vm._s(pantries))]
-          )
+          return _c("option", { domProps: { value: pantries.id } }, [
+            _vm._v(_vm._s(pantries))
+          ])
         }),
         0
       ),
@@ -37896,14 +38019,14 @@ var render = function() {
           { staticClass: "col-md-6" },
           [
             _vm._l(_vm.ingredients, function(ingredient) {
-              return _c("div", { key: ingredient })
+              return _c("div")
             }),
             _vm._v(" "),
             _c(
               "div",
               { staticClass: "row" },
               _vm._l(_vm.filteredIngredients, function(pIngredient, index) {
-                return _c("div", { key: pIngredient }, [
+                return _c("div", [
                   _c(
                     "div",
                     {
@@ -37962,7 +38085,7 @@ var render = function() {
             "div",
             { staticClass: "row" },
             _vm._l(_vm.pantryArray, function(ingredient, index) {
-              return _c("div", { key: ingredient }, [
+              return _c("div", [
                 _vm._v(
                   "\n            " + _vm._s(ingredient.name) + "\n            "
                 ),
@@ -38571,51 +38694,350 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "#apps" } }, [
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.search,
-          expression: "search"
-        }
-      ],
-      attrs: { type: "text", placeholder: "Find" },
-      domProps: { value: _vm.search },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.search = $event.target.value
-        }
-      }
-    }),
+  return _c("div", [
+    _c("h1", [_vm._v("Create Recipe")]),
     _vm._v(" "),
-    _c("div", { staticClass: "content" }, [
-      _c("div", { staticClass: "container" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.message,
-              expression: "message"
-            }
+    _c("div", { staticClass: "panel panel-default" }, [
+      _c("div", { staticClass: "panel-heading" }, [
+        _c(
+          "div",
+          {
+            staticStyle: { position: "absolute", left: "26%", top: "7%" },
+            attrs: { id: "status" }
+          },
+          [
+            _vm.status == 200
+              ? _c("sweetalert-icon", { attrs: { icon: "success" } })
+              : _vm._e(),
+            _vm._v(" "),
+            499 < _vm.status > 300
+              ? _c("sweetalert-icon", { attrs: { icon: "warning" } })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.status == 500
+              ? _c("sweetalert-icon", { attrs: { icon: "error" } })
+              : _vm._e()
           ],
-          attrs: { placeholder: "edit me" },
-          domProps: { value: _vm.message },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("form", [
+        _c(
+          "div",
+          { staticClass: "panel-body" },
+          [
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "col-xs-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "control-label",
+                    attrs: { for: "ingredientName" }
+                  },
+                  [_vm._v("Recipe name")]
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.recipe.recipes_name,
+                      expression: "recipe.recipes_name"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  class: {
+                    "form-control": true,
+                    "is-invalid": _vm.recipe.recipes_name == "",
+                    "is-valid": _vm.recipe.recipes_name != ""
+                  },
+                  attrs: {
+                    type: "text",
+                    id: "ingredientName",
+                    placeholder: "ex: Potato",
+                    required: ""
+                  },
+                  domProps: { value: _vm.recipe.recipes_name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.recipe, "recipes_name", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "valid-feedback" }, [
+                  _vm._v("Looks good!")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "invalid-feedback" }, [
+                  _vm._v("Please a name for you recipe.")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-xs-4 form-group" }, [
+                _c(
+                  "label",
+                  {
+                    staticClass: "control-label",
+                    attrs: { for: "recipeType" }
+                  },
+                  [_vm._v("Recipe Type")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.recipe.recipes_type,
+                        expression: "recipe.recipes_type"
+                      }
+                    ],
+                    staticClass: "dropdown form-control",
+                    class: {
+                      "form-control": true,
+                      "is-invalid": _vm.recipe.recipes_type == "",
+                      "is-valid": _vm.recipe.recipes_type != ""
+                    },
+                    attrs: { id: "recipeType", required: "" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.recipe,
+                          "recipes_type",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "option",
+                      {
+                        attrs: {
+                          value: "",
+                          selected: "",
+                          disabled: "",
+                          hidden: ""
+                        }
+                      },
+                      [_vm._v("Choose here")]
+                    ),
+                    _vm._v(" "),
+                    _vm._l(_vm.recipe.recipes_type, function(type) {
+                      return _c("option", [_vm._v(_vm._s(type))])
+                    })
+                  ],
+                  2
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-xs-4 form-group" }, [
+                _c("label", { staticClass: "control-label" }, [
+                  _vm._v("Ingredient serving")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.recipe.recipes_cost,
+                      expression: "recipe.recipes_cost"
+                    }
+                  ],
+                  class: {
+                    "form-control": true,
+                    "is-invalid": _vm.recipe.recipes_cost < 1,
+                    "is-valid": _vm.recipe.recipes_cost >= 1
+                  },
+                  attrs: { placeholder: "ex: 15", type: "number" },
+                  domProps: { value: _vm.recipe.recipes_cost },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.recipe, "recipes_cost", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "valid-feedback" }, [
+                  _vm._v("Looks good!")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "invalid-feedback" }, [
+                  _vm._v("Invalid quantity")
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "form-row" },
+              [
+                _c("div", { staticClass: "col-xs-4 form-group" }, [
+                  _c("label", { staticClass: "control-label" }, [
+                    _vm._v("Ingredient price")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.recipe.recipes_discription,
+                        expression: "recipe.recipes_discription"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    class: {
+                      "form-control": true,
+                      "is-invalid": _vm.recipe.recipes_discription < 1,
+                      "is-valid": _vm.recipe.recipes_discription >= 1
+                    },
+                    attrs: {
+                      placeholder: "ex: 10.00",
+                      type: "number",
+                      step: "any",
+                      required: ""
+                    },
+                    domProps: { value: _vm.recipe.recipes_discription },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.recipe,
+                          "recipes_discription",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "valid-feedback" }, [
+                    _vm._v("Looks good!")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v("Invalid quantity")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-xs-4 form-group" }, [
+                  _c("label", { staticClass: "control-label" }, [
+                    _vm._v("Recipe description")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.recipe.recipes_protein,
+                        expression: "recipe.recipes_protein"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    class: {
+                      "form-control": true,
+                      "is-invalid": _vm.recipe.recipes_protein < 1,
+                      "is-valid": _vm.recipe.recipes_protein >= 1
+                    },
+                    attrs: {
+                      placeholder: "ex: 6.00",
+                      type: "number",
+                      step: "any",
+                      required: ""
+                    },
+                    domProps: { value: _vm.recipe.recipes_protein },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.recipe,
+                          "recipes_protein",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "valid-feedback" }, [
+                    _vm._v("Looks good!")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "invalid-feedback" }, [
+                    _vm._v("Invalid quantity")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _vm._v(_vm._s(_vm.calories) + " - " + _vm._s(_vm.proteins))
+                ]),
+                _vm._v(" "),
+                _c("div"),
+                _vm._v(" "),
+                _vm._l(_vm.selectedIngredients, function(ingredients) {
+                  return _c("div", [
+                    _c("div", [_vm._v(_vm._s(ingredients.name))])
+                  ])
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { id: "name", name: "name" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.saveForm()
+                  }
+                }
+              },
+              [
+                _c("span", { staticClass: "glyphicon glyphicon-plus" }),
+                _vm._v(" ADD\n        ")
+              ]
+            ),
+            _vm._v(" "),
+            _c("ingredientlist", {
+              attrs: { user: _vm.user },
+              on: {
+                ingredientArray: function($event) {
+                  return _vm.udpateArray($event)
+                }
               }
-              _vm.message = $event.target.value
-            }
-          }
-        }),
-        _vm._v("\r\n            " + _vm._s(_vm.wroteMessage) + "\r\n        ")
+            })
+          ],
+          1
+        )
       ])
     ])
   ])

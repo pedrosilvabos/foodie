@@ -4,8 +4,8 @@
 @extends('layouts.app')
 @section('content')
 
-   <createrecipe></createrecipe>
-
+   <createrecipe :user="{{ $user }}"></createrecipe>
+   
 @endsection
 
 

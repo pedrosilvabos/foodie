@@ -38,7 +38,23 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+ 
+        $recipe = new Recipes();
+        $recipe->recipes_name = $request->recipes_name;
+        $recipe->recipes_type = $request->recipes_type;
+        $recipe->recipes_cost = $request->recipes_cost;
+        $recipe->recipes_discription = $request->recipes_discription;
+        $recipe->recipes_protein = $request->recipes_protein;
+        $recipe->recipes_name = $request->recipes_name;
+        $recipe->save();
+        $ingredientCount = count($request->ingredients);
+        for ($i = 0; $i<$ingredientCount; $i++){
+            $recipe->ingredients()->attach($request->ingredients[$i],['quantity_gr' => 12]);
+        }
+    
+  
+        
+        
     }
 
     /**

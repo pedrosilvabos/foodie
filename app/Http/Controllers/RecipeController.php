@@ -32,9 +32,9 @@ class RecipeController extends Controller
      */
     public function create()
     {      
-
-        
-        return view('recipe.create' );
+        $user = Auth::user();
+        return view('recipe.create', compact('user'));
+   
     }
 
     /**
@@ -55,6 +55,7 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
+  
         $recipe = new Recipes;
         $recipe->recipes_name = $request->get('recipe_name');
         $recipe->recipes_protein = $request->get('recipe_protein');
