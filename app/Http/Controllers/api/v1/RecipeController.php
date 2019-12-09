@@ -38,7 +38,7 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
- 
+
         $recipe = new Recipes();
         $recipe->recipes_name = $request->recipes_name;
         $recipe->recipes_type = $request->recipes_type;
@@ -48,8 +48,9 @@ class RecipeController extends Controller
         $recipe->recipes_name = $request->recipes_name;
         $recipe->save();
         $ingredientCount = count($request->ingredients);
+       
         for ($i = 0; $i<$ingredientCount; $i++){
-            $recipe->ingredients()->attach($request->ingredients[$i],['quantity_gr' => 12]);
+            $recipe->ingredients()->attach($request->ingredients[$i],['quantity_gr' => $request->quantity[$i]]);
         }
     
   

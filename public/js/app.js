@@ -1902,10 +1902,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["user"],
   data: function data() {
     return {
+      ingredientQuantity: "",
       ingredients: [],
       pantry: [],
       pantryId: [],
@@ -1944,6 +1950,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     AddIngredientToPantry: function AddIngredientToPantry(ingredient) {
+      ingredient.quantity_gr = this.ingredientQuantity;
       this.pantryArray.push(ingredient);
       this.ClearCart();
       this.$emit('ingredientArray', ingredient);
@@ -2375,18 +2382,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["user"],
   data: function data() {
     return {
       status: "",
+      selectedRecipes_type: "",
       selectedIngredients: [],
       selectedIngredientsId: [],
+      selectedIngredientQuantity: [],
       calories: 0,
       proteins: 0,
       recipe: {
         recipes_name: "",
-        recipes_type: [1, 2, 3],
+        recipes_type: ["Breakfast", "Lunch", "Dinner", "Snack", "Dessert"],
         recipes_cost: "",
         recipes_discription: "",
         recipes_protein: "",
@@ -2406,11 +2421,12 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("../api/recipes", null, {
         params: {
           recipes_name: this.recipe.recipes_name,
-          recipes_type: this.recipe.recipes_type,
+          recipes_type: this.selectedRecipes_type,
           recipes_cost: this.recipe.recipes_cost,
           recipes_discription: this.recipe.recipes_discription,
           recipes_protein: this.recipe.recipes_protein,
-          ingredients: this.selectedIngredientsId
+          ingredients: this.selectedIngredientsId,
+          quantity: this.selectedIngredientQuantity
         }
       }) // add user token
       .then(function (response) {
@@ -2445,10 +2461,9 @@ __webpack_require__.r(__webpack_exports__);
       this.dismissCountDown = this.dismissSecs;
     },
     udpateArray: function udpateArray(ingredientsForRecipe) {
-      console.log('updated array'); //clear out the array so you dont overlap it, this should be fixed ASAP!
+      this.selectedIngredientQuantity.push(ingredientsForRecipe.quantity_gr); //clear out the array so you dont overlap it, this should be fixed ASAP!
 
       this.selectedIngredients.push(ingredientsForRecipe);
-      console.log(ingredientsForRecipe);
       this.selectedIngredientsId = [];
 
       for (var i = 0; i < this.selectedIngredients.length; i++) {
@@ -38016,7 +38031,7 @@ var render = function() {
       _c("div", { staticClass: "row" }, [
         _c(
           "div",
-          { staticClass: "col-md-6" },
+          { staticClass: "col-md-12" },
           [
             _vm._l(_vm.ingredients, function(ingredient) {
               return _c("div")
@@ -38038,7 +38053,7 @@ var render = function() {
                         "div",
                         {
                           staticClass: "card",
-                          staticStyle: { width: "7rem", height: "9rem" }
+                          staticStyle: { width: "12rem", height: "10rem" }
                         },
                         [
                           _c("img", {
@@ -38053,6 +38068,32 @@ var render = function() {
                             _c("h5", { staticClass: "card-title" }, [
                               _vm._v(_vm._s(pIngredient.name))
                             ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.ingredientQuantity,
+                                  expression: "ingredientQuantity"
+                                }
+                              ],
+                              attrs: {
+                                placeholder: "gr",
+                                type: "number",
+                                min: "9",
+                                max: "6"
+                              },
+                              domProps: { value: _vm.ingredientQuantity },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.ingredientQuantity = $event.target.value
+                                }
+                              }
+                            }),
                             _vm._v(" "),
                             _c("input", {
                               staticClass: "fa fa-plus",
@@ -38796,15 +38837,15 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.recipe.recipes_type,
-                        expression: "recipe.recipes_type"
+                        value: _vm.selectedRecipes_type,
+                        expression: "selectedRecipes_type"
                       }
                     ],
                     staticClass: "dropdown form-control",
                     class: {
                       "form-control": true,
-                      "is-invalid": _vm.recipe.recipes_type == "",
-                      "is-valid": _vm.recipe.recipes_type != ""
+                      "is-invalid": _vm.selectedRecipes_type == "",
+                      "is-valid": _vm.selectedRecipes_type != ""
                     },
                     attrs: { id: "recipeType", required: "" },
                     on: {
@@ -38817,35 +38858,16 @@ var render = function() {
                             var val = "_value" in o ? o._value : o.value
                             return val
                           })
-                        _vm.$set(
-                          _vm.recipe,
-                          "recipes_type",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
+                        _vm.selectedRecipes_type = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
                       }
                     }
                   },
-                  [
-                    _c(
-                      "option",
-                      {
-                        attrs: {
-                          value: "",
-                          selected: "",
-                          disabled: "",
-                          hidden: ""
-                        }
-                      },
-                      [_vm._v("Choose here")]
-                    ),
-                    _vm._v(" "),
-                    _vm._l(_vm.recipe.recipes_type, function(type) {
-                      return _c("option", [_vm._v(_vm._s(type))])
-                    })
-                  ],
-                  2
+                  _vm._l(_vm.recipe.recipes_type, function(type) {
+                    return _c("option", [_vm._v(_vm._s(type))])
+                  }),
+                  0
                 )
               ]),
               _vm._v(" "),
@@ -38868,7 +38890,7 @@ var render = function() {
                     "is-invalid": _vm.recipe.recipes_cost < 1,
                     "is-valid": _vm.recipe.recipes_cost >= 1
                   },
-                  attrs: { placeholder: "ex: 15", type: "number" },
+                  attrs: { placeholder: "ex: 3", type: "number" },
                   domProps: { value: _vm.recipe.recipes_cost },
                   on: {
                     input: function($event) {

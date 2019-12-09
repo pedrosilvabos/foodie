@@ -7,7 +7,6 @@
       <select>
         <option
           v-for="(pantries) in pantry"
-       
           :value="pantries.id"
         >{{ pantries }}</option>
       </select>
@@ -21,15 +20,21 @@
       />
       <div class="content"></div>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <div v-for="ingredient in ingredients"></div>
           <div class="row">
             <div v-for="(pIngredient, index) in filteredIngredients">
               <div class="col-sm-4" style="padding:10px">
-                <div class="card" style="width: 7rem; height: 9rem">
+                <div class="card" style="width: 12rem; height: 10rem">
                   <img class="card-img-top" :src="GetImagePath(index)" alt="Card image cap" />
                   <div class="card-body">
                     <h5 class="card-title">{{ pIngredient.name }}</h5>
+                    <input
+                      placeholder="gr"
+                      type="number"
+                      v-model="ingredientQuantity"
+                      min="9" max="6"
+                    />
                     <input
                       type="button"
                       class="fa fa-plus"
@@ -67,6 +72,7 @@ export default {
   props: ["user"],
   data() {
     return {
+ingredientQuantity:"",
       ingredients: [],
       pantry: [],
       pantryId: [],
@@ -98,9 +104,10 @@ export default {
   },
   methods: {
     AddIngredientToPantry: function(ingredient) {
+ingredient.quantity_gr = this.ingredientQuantity;
       this.pantryArray.push(ingredient);
       this.ClearCart();
-      this.$emit('ingredientArray', ingredient)
+      this.$emit('ingredientArray', ingredient )
     },
     RemoveIngredientFromPantry: function(index) {
       this.pantryArray.splice(index, 1);

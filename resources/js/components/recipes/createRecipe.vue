@@ -32,20 +32,21 @@
               <label for="recipeType" class="control-label">Recipe Type</label>
               <select
                 id="recipeType"
-                v-model="recipe.recipes_type"
+                v-model="selectedRecipes_type"
                 class="dropdown form-control"
-                v-bind:class="{'form-control':true, 'is-invalid' : (recipe.recipes_type ==''), 'is-valid' : (recipe.recipes_type !='')}"
+                v-bind:class="{'form-control':true, 'is-invalid' : (selectedRecipes_type ==''), 'is-valid' : (selectedRecipes_type !='')}"
                 required
               >
-                <option value selected disabled hidden>Choose here</option>
+            
                 <option v-for="type in recipe.recipes_type">{{type}}</option>
               </select>
+
             </div>
 
             <div class="col-xs-4 form-group">
               <label class="control-label">Ingredient serving</label>
               <input
-                placeholder="ex: 15"
+                placeholder="ex: 3"
                 type="number"
                 v-model="recipe.recipes_cost"
                 v-bind:class="{'form-control':true, 'is-invalid' : (recipe.recipes_cost < 1), 'is-valid' : (recipe.recipes_cost >= 1)}"
@@ -90,11 +91,16 @@
 
             <div v-for="ingredients in selectedIngredients">
               <div>{{ingredients.name}}</div>
+              
             </div>
+            
           </div>
+          
           <button class="btn btn-primary" @click.prevent="saveForm()" id="name" name="name">
             <span class="glyphicon glyphicon-plus"></span> ADD
           </button>
+          
+          
         <ingredientlist :user=user v-on:ingredientArray="udpateArray($event)"></ingredientlist>
           <!-- Icon can be one of: "success", "warning", "info", "error" and "loading" -->
         </div>
@@ -109,13 +115,15 @@ export default {
   data() {
     return {
       status: "",
+      selectedRecipes_type:"",
       selectedIngredients: [],
       selectedIngredientsId:[],
+      selectedIngredientQuantity:[],
       calories:0,
       proteins:0,
         recipe: {
         recipes_name: "",
-        recipes_type: [1,2,3],
+        recipes_type: ["Breakfast","Lunch","Dinner","Snack","Dessert"],
         recipes_cost: "",
         recipes_discription: "",
         recipes_protein: "",
@@ -135,11 +143,13 @@ export default {
           params: {
 
         recipes_name: this.recipe.recipes_name,
-        recipes_type: this.recipe.recipes_type,
+        recipes_type: this.selectedRecipes_type,
         recipes_cost: this.recipe.recipes_cost,
         recipes_discription: this.recipe.recipes_discription,
         recipes_protein: this.recipe.recipes_protein,
         ingredients: this.selectedIngredientsId,
+        quantity:this.selectedIngredientQuantity
+
 
           }
         }) // add user token
@@ -176,11 +186,12 @@ export default {
     },
     udpateArray(ingredientsForRecipe)
     {
-      console.log('updated array')
+
+      this.selectedIngredientQuantity.push(ingredientsForRecipe.quantity_gr);
       //clear out the array so you dont overlap it, this should be fixed ASAP!
    
 this.selectedIngredients.push(ingredientsForRecipe);
-console.log(ingredientsForRecipe)
+
  this.selectedIngredientsId = [];
 for(var i=0; i<this.selectedIngredients.length;i++){
  
