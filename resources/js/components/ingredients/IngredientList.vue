@@ -8,7 +8,7 @@
         <option
           v-for="(pantries) in pantry"
           :value="pantries.id"
-        >{{ pantries }}</option>
+        >{{ pantries.id }}</option>
       </select>
 
       <input
@@ -87,7 +87,8 @@ ingredientQuantity:"",
     this.userId = this.user.id;
     axios
       .get("../api/pantry/" + this.userId) // add user token
-      .then(response => (this.pantry = response.data.id));
+      
+      .then(response => (this.pantry = response.data));
     axios
       .get("../api/ingredients") // add user token
       .then(response => (this.ingredients = response.data));
@@ -104,7 +105,7 @@ ingredientQuantity:"",
   },
   methods: {
     AddIngredientToPantry: function(ingredient) {
-ingredient.quantity_gr = this.ingredientQuantity;
+      ingredient.quantity_gr = this.ingredientQuantity;
       this.pantryArray.push(ingredient);
       this.ClearCart();
       this.$emit('ingredientArray', ingredient )

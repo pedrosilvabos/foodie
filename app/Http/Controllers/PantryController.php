@@ -31,16 +31,18 @@ class PantryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
         //create a new pantry
+        $user = Auth::user();
+        
         $pantries = new Pantries();
         $pantries->save();
         //get the new pantry id
         $pantry = Pantry::find($pantries->id);
         //attach the pantry id and the user id,accepts an array so itll be easy for a pantry to have multiple users
         $pantry->user()->attach(
-            [$id]
+            [$user->id]
         );
         return $pantry->toJson(JSON_PRETTY_PRINT);
     }

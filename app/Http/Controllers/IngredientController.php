@@ -36,7 +36,8 @@ class IngredientController extends Controller
      */
     public function create()
     {
-        return view('ingredient.create');
+        $user = Auth::user();
+        return view('ingredient.create', compact('user'));
     }
 
     /**
@@ -47,7 +48,6 @@ class IngredientController extends Controller
      */
     public function store(Request $request)
     {
-
         $ingredient = new Ingredients;
         $ingredient->ingredient_name = $request->get('ingredient_name');
         $ingredient->ingredient_type = $request->get('ingredient_type');

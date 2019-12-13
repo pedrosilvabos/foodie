@@ -4,6 +4,6 @@
 
 <ul>
 <createingredient> </createingredient>
-<IngredientList :user="{{ $user }}"> </IngredientList>
+<ingredientList :user="{{ $user }}"> </ingredientList>
 </ul>
 @endsection

@@ -1928,7 +1928,7 @@ __webpack_require__.r(__webpack_exports__);
     this.userId = this.user.id;
     axios.get("../api/pantry/" + this.userId) // add user token
     .then(function (response) {
-      return _this.pantry = response.data.id;
+      return _this.pantry = response.data;
     });
     axios.get("../api/ingredients") // add user token
     .then(function (response) {
@@ -2133,6 +2133,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2141,7 +2143,8 @@ __webpack_require__.r(__webpack_exports__);
       ingredient: {
         name: "",
         type: "",
-        servings: "",
+        fat: "",
+        carbohydrates: "",
         price: "",
         quantity_gr: "",
         proteins: "",
@@ -2162,10 +2165,11 @@ __webpack_require__.r(__webpack_exports__);
         params: {
           name: this.ingredient.name,
           type: this.ingredient.type,
-          servings: this.ingredient.servings,
           price: this.ingredient.price,
           quantity_gr: this.ingredient.quantity_gr,
           proteins: this.ingredient.proteins,
+          fat: this.ingredient.fat,
+          carbohydrates: this.ingredient.carbohydrates,
           calories: this.ingredient.calories,
           lifetime: this.ingredient.lifetime,
           icon: this.ingredient.icon
@@ -2225,6 +2229,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["user"],
   data: function data() {
@@ -2242,7 +2247,7 @@ __webpack_require__.r(__webpack_exports__);
     this.userId = this.user.id;
     axios.get("../api/pantry/" + this.userId) // add user token
     .then(function (response) {
-      return _this.pantry = response.data.ingredients;
+      return _this.pantry = response.data;
     });
   },
   computed: {
@@ -38010,7 +38015,7 @@ var render = function() {
         "select",
         _vm._l(_vm.pantry, function(pantries) {
           return _c("option", { domProps: { value: pantries.id } }, [
-            _vm._v(_vm._s(pantries))
+            _vm._v(_vm._s(pantries.id))
           ])
         }),
         0
@@ -38179,7 +38184,6 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "panel panel-default" }, [
       _c("div", { staticClass: "panel-heading" }, [
-        _vm._v("\n      Create new company\n      "),
         _c(
           "div",
           {
@@ -38213,7 +38217,7 @@ var render = function() {
                   staticClass: "control-label",
                   attrs: { for: "ingredientName" }
                 },
-                [_vm._v("Ingredient name")]
+                [_vm._v("Name")]
               ),
               _vm._v(" "),
               _c("input", {
@@ -38253,7 +38257,7 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "invalid-feedback" }, [
-                _vm._v("Please a name for you ingredient.")
+                _vm._v("Please type a name for you ingredient.")
               ])
             ]),
             _vm._v(" "),
@@ -38264,7 +38268,7 @@ var render = function() {
                   staticClass: "control-label",
                   attrs: { for: "ingredientType" }
                 },
-                [_vm._v("Ingredient Type")]
+                [_vm._v("Type")]
               ),
               _vm._v(" "),
               _c(
@@ -38329,234 +38333,250 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-xs-4 form-group" }, [
-              _c("label", { staticClass: "control-label" }, [
-                _vm._v("Ingredient serving")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.ingredient.servings,
-                    expression: "ingredient.servings"
-                  }
-                ],
-                class: {
-                  "form-control": true,
-                  "is-invalid": _vm.ingredient.servings < 1,
-                  "is-valid": _vm.ingredient.servings >= 1
-                },
-                attrs: { placeholder: "ex: 15", type: "number" },
-                domProps: { value: _vm.ingredient.servings },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "col-xs-4 form-group" }, [
+                _c("label", { staticClass: "control-label" }, [
+                  _vm._v("Price per kg")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.ingredient.price,
+                      expression: "ingredient.price"
                     }
-                    _vm.$set(_vm.ingredient, "servings", $event.target.value)
+                  ],
+                  staticClass: "form-control",
+                  class: {
+                    "form-control": true,
+                    "is-invalid": _vm.ingredient.price < 1,
+                    "is-valid": _vm.ingredient.price >= 1
+                  },
+                  attrs: {
+                    placeholder: "ex: 10.00",
+                    type: "number",
+                    step: "any",
+                    required: ""
+                  },
+                  domProps: { value: _vm.ingredient.price },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.ingredient, "price", $event.target.value)
+                    }
                   }
-                }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "valid-feedback" }, [
-                _vm._v("Looks good!")
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "valid-feedback" }, [
+                  _vm._v("Looks good!")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "invalid-feedback" }, [
+                  _vm._v("Invalid price")
+                ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "invalid-feedback" }, [
-                _vm._v("Invalid quantity")
+              _c("div", { staticClass: "col-xs-4 form-group" }, [
+                _c("label", { staticClass: "control-label" }, [
+                  _vm._v("Quantity Gr")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.ingredient.quantity_gr,
+                      expression: "ingredient.quantity_gr"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  class: {
+                    "form-control": true,
+                    "is-invalid": _vm.ingredient.quantity_gr < 1,
+                    "is-valid": _vm.ingredient.quantity_gr >= 1
+                  },
+                  attrs: {
+                    placeholder: "ex: 6.00",
+                    type: "number",
+                    step: "any",
+                    required: ""
+                  },
+                  domProps: { value: _vm.ingredient.quantity_gr },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.ingredient,
+                        "quantity_gr",
+                        $event.target.value
+                      )
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "valid-feedback" }, [
+                  _vm._v("Looks good!")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "invalid-feedback" }, [
+                  _vm._v("Invalid quantity")
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "col-xs-4 form-group" }, [
+                _c("label", { staticClass: "control-label" }, [
+                  _vm._v("Ingredient Protein (grams)")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.ingredient.proteins,
+                      expression: "ingredient.proteins"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  class: {
+                    "form-control": true,
+                    "is-invalid": _vm.ingredient.proteins < 1,
+                    "is-valid": _vm.ingredient.proteins >= 1
+                  },
+                  attrs: {
+                    placeholder: "150",
+                    type: "number",
+                    step: "any",
+                    required: ""
+                  },
+                  domProps: { value: _vm.ingredient.proteins },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.ingredient, "proteins", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "valid-feedback" }, [
+                  _vm._v("Looks good!")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "invalid-feedback" }, [
+                  _vm._v("Invalid quantity")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-xs-4 form-group" }, [
+                _c("label", { staticClass: "control-label" }, [
+                  _vm._v("Ingredient Fat (grams)")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.ingredient.fat,
+                      expression: "ingredient.fat"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  class: {
+                    "form-control": true,
+                    "is-invalid": _vm.ingredient.fat < 1,
+                    "is-valid": _vm.ingredient.fat >= 1
+                  },
+                  attrs: {
+                    placeholder: "150",
+                    type: "number",
+                    step: "any",
+                    required: ""
+                  },
+                  domProps: { value: _vm.ingredient.fat },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.ingredient, "fat", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "valid-feedback" }, [
+                  _vm._v("Looks good!")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "invalid-feedback" }, [
+                  _vm._v("Invalid quantity")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-xs-4 form-group" }, [
+                _c("label", { staticClass: "control-label" }, [
+                  _vm._v("Ingredient Carbohydrates (grams)")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.ingredient.carbohydrates,
+                      expression: "ingredient.carbohydrates"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  class: {
+                    "form-control": true,
+                    "is-invalid": _vm.ingredient.carbohydrates < 1,
+                    "is-valid": _vm.ingredient.carbohydrates >= 1
+                  },
+                  attrs: {
+                    placeholder: "150",
+                    type: "number",
+                    step: "any",
+                    required: ""
+                  },
+                  domProps: { value: _vm.ingredient.carbohydrates },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.ingredient,
+                        "carbohydrates",
+                        $event.target.value
+                      )
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "valid-feedback" }, [
+                  _vm._v("Looks good!")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "invalid-feedback" }, [
+                  _vm._v("Invalid quantity")
+                ])
               ])
             ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-row" }, [
-            _c("div", { staticClass: "col-xs-4 form-group" }, [
-              _c("label", { staticClass: "control-label" }, [
-                _vm._v("Ingredient price")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.ingredient.price,
-                    expression: "ingredient.price"
-                  }
-                ],
-                staticClass: "form-control",
-                class: {
-                  "form-control": true,
-                  "is-invalid": _vm.ingredient.price < 1,
-                  "is-valid": _vm.ingredient.price >= 1
-                },
-                attrs: {
-                  placeholder: "ex: 10.00",
-                  type: "number",
-                  step: "any",
-                  required: ""
-                },
-                domProps: { value: _vm.ingredient.price },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.ingredient, "price", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "valid-feedback" }, [
-                _vm._v("Looks good!")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "invalid-feedback" }, [
-                _vm._v("Invalid quantity")
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-4 form-group" }, [
-              _c("label", { staticClass: "control-label" }, [
-                _vm._v("Ingredient quantity Kg")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.ingredient.quantity_gr,
-                    expression: "ingredient.quantity_gr"
-                  }
-                ],
-                staticClass: "form-control",
-                class: {
-                  "form-control": true,
-                  "is-invalid": _vm.ingredient.quantity_gr < 1,
-                  "is-valid": _vm.ingredient.quantity_gr >= 1
-                },
-                attrs: {
-                  placeholder: "ex: 6.00",
-                  type: "number",
-                  step: "any",
-                  required: ""
-                },
-                domProps: { value: _vm.ingredient.quantity_gr },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.ingredient, "quantity_gr", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "valid-feedback" }, [
-                _vm._v("Looks good!")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "invalid-feedback" }, [
-                _vm._v("Invalid quantity")
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-4 form-group" }, [
-              _c("label", { staticClass: "control-label" }, [
-                _vm._v("Ingredient Protein (grams)")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.ingredient.proteins,
-                    expression: "ingredient.proteins"
-                  }
-                ],
-                staticClass: "form-control",
-                class: {
-                  "form-control": true,
-                  "is-invalid": _vm.ingredient.proteins < 1,
-                  "is-valid": _vm.ingredient.proteins >= 1
-                },
-                attrs: {
-                  placeholder: "150",
-                  type: "number",
-                  step: "any",
-                  required: ""
-                },
-                domProps: { value: _vm.ingredient.proteins },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.ingredient, "proteins", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "valid-feedback" }, [
-                _vm._v("Looks good!")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "invalid-feedback" }, [
-                _vm._v("Invalid quantity")
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-row" }, [
-            _c("div", { staticClass: "col-xs-4 form-group" }, [
-              _c("label", { staticClass: "control-label" }, [
-                _vm._v("Ingredient Calories")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.ingredient.calories,
-                    expression: "ingredient.calories"
-                  }
-                ],
-                staticClass: "form-control",
-                class: {
-                  "form-control": true,
-                  "is-invalid": _vm.ingredient.calories < 1,
-                  "is-valid": _vm.ingredient.calories >= 1
-                },
-                attrs: {
-                  placeholder: "80",
-                  type: "number",
-                  step: "any",
-                  required: ""
-                },
-                domProps: { value: _vm.ingredient.calories },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.ingredient, "calories", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "valid-feedback" }, [
-                _vm._v("Looks good!")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "invalid-feedback" }, [
-                _vm._v("Invalid quantity")
-              ])
-            ]),
-            _vm._v(" "),
             _c("div", { staticClass: "col-xs-4 form-group" }, [
               _c("label", { staticClass: "control-label" }, [
                 _vm._v("Ingredient lifetime (days)")
@@ -38599,7 +38619,7 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "invalid-feedback" }, [
-                _vm._v("Invalid quantity")
+                _vm._v("Invalid time span")
               ])
             ]),
             _vm._v(" "),
@@ -38705,7 +38725,7 @@ var render = function() {
         _vm._v("\n    " + _vm._s(_vm.userName) + "'s Pantries\n    "),
         _vm._l(_vm.pantry, function(pantryItem, index) {
           return _c("div", { key: (pantryItem, index) }, [
-            _vm._v(_vm._s(pantryItem.name))
+            _vm._v(" " + _vm._s(pantryItem.id))
           ])
         })
       ],

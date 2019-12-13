@@ -32,10 +32,10 @@ class IngredientController extends Controller
         $ingredient->name = $request->name;
         $ingredient->type = $request->type;
         $ingredient->price = $request->price;
-        $ingredient->servings = $request->servings;
         $ingredient->quantity_gr = $request->quantity_gr;
         $ingredient->proteins = $request->proteins;
-        $ingredient->calories = $request->calories;
+        $ingredient->fat = $request->fat;
+        $ingredient->carbohydrats = $request->fat;
         $ingredient->lifetime = $request->lifetime;
         $ingredient->icon = $request->icon;
 
@@ -102,6 +102,6 @@ class IngredientController extends Controller
         }
         $ingredient->delete();
 
-        return $ingredientc['name'] . " was deleted";
+        return $ingredient['name'] . " was deleted";
     }
 }

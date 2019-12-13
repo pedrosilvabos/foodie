@@ -6,4 +6,3 @@ All the Ingredients
         <IngredientList :user="{{ $user }}"> </IngredientList>
 </ul>
 @endsection
-

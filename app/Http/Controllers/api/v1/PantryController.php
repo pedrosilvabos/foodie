@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Pantry;
 use App\Ingredients;
 use App\User;
-
+use Illuminate\Support\Facades\Auth;
 class PantryController extends Controller
 {
     /**
@@ -17,9 +17,10 @@ class PantryController extends Controller
      */
     public function index($id)
     {
-    
+   //this is wrongm and index has no arguments!!!
        // $pantries = Pantry::all(); //gets all the pantries good for admin
        $pantries = Pantry::where('user_id', $id);
+
         if($pantries == null)
         {
             return "there are no pantries";
@@ -83,10 +84,14 @@ class PantryController extends Controller
      */
     public function show($id)
     {
-        $pantry = Pantry::find($id);
+        //this gets the pantries for the user with the $id in an array with the pantries in objects
+        $pantry = Pantry::whereHas('user', function ($query) use($id) {
+            $query->where('user_id', 'like', $id);
+        })->get();
+
         if($pantry == null)
         {
-            return "recipe does not exist";
+            return "pantry does not exist";
         }
         $ingredients = Ingredients::whereHas('pantry', function ($query) use($id) {
             $query->where('id', 'like', $id);
