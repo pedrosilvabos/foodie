@@ -2230,6 +2230,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["user"],
   data: function data() {
@@ -38034,97 +38039,85 @@ var render = function() {
       _c("div", { staticClass: "content" }),
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
-        _c(
-          "div",
-          { staticClass: "col-md-12" },
-          [
-            _vm._l(_vm.ingredients, function(ingredient) {
-              return _c("div")
-            }),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "row" },
-              _vm._l(_vm.filteredIngredients, function(pIngredient, index) {
-                return _c("div", [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "col-sm-4",
-                      staticStyle: { padding: "10px" }
-                    },
-                    [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "card",
-                          staticStyle: { width: "12rem", height: "10rem" }
-                        },
-                        [
-                          _c("img", {
-                            staticClass: "card-img-top",
+        _c("div", { staticClass: "col-md-12" }, [
+          _c(
+            "div",
+            { staticClass: "row" },
+            _vm._l(_vm.filteredIngredients, function(pIngredient, index) {
+              return _c("div", [
+                _c(
+                  "div",
+                  { staticClass: "col-sm-4", staticStyle: { padding: "10px" } },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "card",
+                        staticStyle: { width: "12rem", height: "10rem" }
+                      },
+                      [
+                        _c("img", {
+                          staticClass: "card-img-top",
+                          attrs: {
+                            src: _vm.GetImagePath(index),
+                            alt: "Card image cap"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "card-body" }, [
+                          _c("h5", { staticClass: "card-title" }, [
+                            _vm._v(_vm._s(pIngredient.name))
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.ingredientQuantity,
+                                expression: "ingredientQuantity"
+                              }
+                            ],
                             attrs: {
-                              src: _vm.GetImagePath(index),
-                              alt: "Card image cap"
+                              placeholder: "gr",
+                              type: "number",
+                              min: "9",
+                              max: "6"
+                            },
+                            domProps: { value: _vm.ingredientQuantity },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.ingredientQuantity = $event.target.value
+                              }
                             }
                           }),
                           _vm._v(" "),
-                          _c("div", { staticClass: "card-body" }, [
-                            _c("h5", { staticClass: "card-title" }, [
-                              _vm._v(_vm._s(pIngredient.name))
-                            ]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.ingredientQuantity,
-                                  expression: "ingredientQuantity"
-                                }
-                              ],
-                              attrs: {
-                                placeholder: "gr",
-                                type: "number",
-                                min: "9",
-                                max: "6"
-                              },
-                              domProps: { value: _vm.ingredientQuantity },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.ingredientQuantity = $event.target.value
-                                }
+                          _c("input", {
+                            staticClass: "fa fa-plus",
+                            attrs: {
+                              type: "button",
+                              "aria-hidden": "true",
+                              value: "add"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.AddIngredientToPantry(pIngredient)
                               }
-                            }),
-                            _vm._v(" "),
-                            _c("input", {
-                              staticClass: "fa fa-plus",
-                              attrs: {
-                                type: "button",
-                                "aria-hidden": "true",
-                                value: "add"
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.AddIngredientToPantry(pIngredient)
-                                }
-                              }
-                            })
-                          ])
-                        ]
-                      )
-                    ]
-                  )
-                ])
-              }),
-              0
-            )
-          ],
-          2
-        ),
+                            }
+                          })
+                        ])
+                      ]
+                    )
+                  ]
+                )
+              ])
+            }),
+            0
+          )
+        ]),
         _vm._v(" "),
         _c("div", { staticClass: "col-md-6" }, [
           _c(
@@ -38722,11 +38715,29 @@ var render = function() {
       "div",
       { staticClass: "content" },
       [
-        _vm._v("\n    " + _vm._s(_vm.userName) + "'s Pantries\n    "),
+        _vm._v("\n    " + _vm._s(_vm.userName) + "'s Pantries\n \n    "),
         _vm._l(_vm.pantry, function(pantryItem, index) {
-          return _c("div", { key: (pantryItem, index) }, [
-            _vm._v(" " + _vm._s(pantryItem.id))
-          ])
+          return _c(
+            "div",
+            { key: (pantryItem, index) },
+            [
+              _vm._v(" " + _vm._s(pantryItem.id) + "\n      "),
+              _vm._l(pantryItem.ingredients, function(value) {
+                return _c("li", [
+                  _vm._v(
+                    "\n      " +
+                      _vm._s(value.name) +
+                      " - " +
+                      _vm._s(value.quantity_gr) +
+                      " - " +
+                      _vm._s((value.price / value.quantity_gr) * 100) +
+                      "c/100gr\n      "
+                  )
+                ])
+              })
+            ],
+            2
+          )
         })
       ],
       2

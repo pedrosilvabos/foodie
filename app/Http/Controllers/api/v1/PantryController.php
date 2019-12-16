@@ -88,18 +88,23 @@ class PantryController extends Controller
         $pantry = Pantry::whereHas('user', function ($query) use($id) {
             $query->where('user_id', 'like', $id);
         })->get();
-
         if($pantry == null)
         {
             return "pantry does not exist";
         }
-        $ingredients = Ingredients::whereHas('pantry', function ($query) use($id) {
-            $query->where('id', 'like', $id);
-        })->get();
+        $numberOfPantries = count($pantry);
+        $pantries = [];
+        for($i = 0; $numberOfPantries>$i; $i++){
+            $ingredients = Ingredients::whereHas('pantry', function ($query) use($i) {
+            $query->where('id', 'like', $i);
+            })->get();
+            $pantry[$i]->ingredients = $ingredients;      
+          
+            
+        }
         
-        $pantry->ingredients = $ingredients;
 
-        return $pantry->toJson(JSON_PRETTY_PRINT);;
+        return $pantry;
     }
 
     /**

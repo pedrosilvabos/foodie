@@ -3,7 +3,12 @@
     <input type="text" v-model="search" placeholder="Find" />
     <div class="content">
       {{userName}}'s Pantries
-      <div v-for="(pantryItem, index) in pantry" :key="(pantryItem, index)"> {{pantryItem.id}}</div>
+   
+      <div v-for="(pantryItem, index) in pantry" :key="(pantryItem, index)"> {{pantryItem.id}}
+        <li v-for="value in pantryItem.ingredients">
+        {{ value.name }} - {{ value.quantity_gr }} - {{(value.price/value.quantity_gr)*100 }}c/100gr
+        </li>
+      </div>
     </div>
     
   </div>

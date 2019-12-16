@@ -21,7 +21,7 @@
       <div class="content"></div>
       <div class="row">
         <div class="col-md-12">
-          <div v-for="ingredient in ingredients"></div>
+    
           <div class="row">
             <div v-for="(pIngredient, index) in filteredIngredients">
               <div class="col-sm-4" style="padding:10px">
@@ -87,7 +87,6 @@ ingredientQuantity:"",
     this.userId = this.user.id;
     axios
       .get("../api/pantry/" + this.userId) // add user token
-      
       .then(response => (this.pantry = response.data));
     axios
       .get("../api/ingredients") // add user token
